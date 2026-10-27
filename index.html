@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Coffee Track Tycoon</title>
+  <style>
+    :root {
+      --bg-main: #1e130c;
+      --panel-bg: #2d1c13;
+      --card-bg: #3d271b;
+      --accent-gold: #f4a261;
+      --accent-green: #2a9d8f;
+      --accent-red: #e76f51;
+      --text-light: #fefae0;
+      --border-color: #633f2a;
+    }
+    body.neon {
+      --bg-main: #0d0b18;
+      --panel-bg: #17142b;
+      --card-bg: #231f42;
+      --accent-gold: #00f0ff;
+      --accent-green: #39ff14;
+      --accent-red: #ff007f;
+      --text-light: #ffffff;
+      --border-color: #443c7a;
+    }
+    body.garden {
+      --bg-main: #132a13;
+      --panel-bg: #1e3f20;
+      --card-bg: #2d5a30;
+      --accent-gold: #ecf39e;
+      --accent-green: #588157;
+      --accent-red: #d90429;
+      --text-light: #f8f9fa;
+      --border-color: #3f7d44;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 6px;
+      transition: background 0.3s ease;
+    }
+    #game-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--panel-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+    }
+    header {
+      background: rgba(0,0,0,0.3);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--border-color);
+      font-size: 13px;
+      font-weight: bold;
+    }
+    header span { color: var(--accent-gold); }
+
+    /* Tables & Dining Area */
+    #dining-hall {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 100%);
+    }
+    .area-header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-gold);
+      margin-bottom: 2px;
+    }
+    .tables-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .table-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      min-height: 140px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      position: relative;
+    }
+    .table-box.locked {
+      opacity: 0.5;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+    }
+    .table-num {
+      font-size: 10px;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+    }
+    .cust-avatar { font-size: 30px; margin: 2px 0; }
+    .cust-name { font-size: 11px; font-weight: bold; }
+    .order-tag {
+      background: #fff;
+      color: #111;
+      padding: 3px 6px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-top: 4px;
+      border: 1px solid #ddd;
+    }
+    .timer-wrap {
+      width: 100%;
+      height: 6px;
+      background: #222;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      background: var(--accent-green);
+      transition: width 0.15s linear, background-color 0.3s;
+    }
+    .serve-table-btn {
+      margin-top: 6px;
+      background: var(--accent-green);
+      border: none;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Kitchen Preparation */
+    #kitchen-hall {
+      padding: 10px 12px;
+      border-top: 2px solid var(--border-color);
+    }
+    .prep-tray {
+      background: rgba(0,0,0,0.25);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 10px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .tray-item {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-gold);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .cook-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .cook-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      padding: 8px 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    .cook-btn.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .cook-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent-gold);
+    }
+
+    /* Management & Upgrades */
+    #shop-hall {
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.3);
+      border-top: 2px solid var(--border-color);
+    }
+    .shop-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      max-height: 110px;
+      overflow-y: auto;
+    }
+    .shop-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+    }
+    .buy-btn {
+      background: var(--accent-gold);
+      color: #111;
+      border: none;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .buy-btn:disabled {
+      background: #555;
+      color: #888;
+      cursor: not-allowed;
+    }
+    #notice-box {
+      font-size: 11px;
+      color: var(--accent-gold);
+      text-align: center;
+      padding: 4px;
+      min-height: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div id="game-container">
+  <header>
+    <div>Cash: <span id="cash-val">$20</span></div>
+    <div>Reputation: <span id="rep-val">100%</span></div>
+    <div>Theme: <span id="theme-val">Classic</span></div>
+  </header>
+
+  <div id="notice-box">Welcome to Coffee Track Tycoon!</div>
+
+  <!-- Ambience: Dining Hall with Multi-Customers -->
+  <section id="dining-hall">
+    <div class="area-header">Dining Area (Tables)</div>
+    <div class="tables-container" id="tables-container">
+      <!-- 3 Tables rendered by JS -->
+    </div>
+  </section>
+
+  <!-- Kitchen: Cooking & Serving Ready Tray -->
+  <section id="kitchen-hall">
+    <div class="area-header">Ready Tray (Tap table to serve):</div>
+    <div class="prep-tray" id="prep-tray">
+      <span style="font-size: 11px; color: #888;">No items ready. Brew something!</span>
+    </div>
+
+    <div class="area-header">Brewing & Cooking Stations:</div>
+    <div class="cook-grid" id="cook-grid">
+      <!-- Meals rendered by JS -->
+    </div>
+  </section>
+
+  <!-- Tycoon Management: Tables, Recipes, Themes -->
+  <section id="shop-hall">
+    <div class="area-header">Upgrades & Cafe Expansion</div>
+    <div class="shop-list" id="shop-list">
+      <!-- Upgrades rendered by JS -->
+    </div>
+  </section>
+</div>
+
+<script>
+  /* --- Synthetic Sound Effects (Web Audio API) --- */
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playBeep(freq, type, duration) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e){}
+  }
+  const soundEffects = {
+    click: () => playBeep(400, 'sine', 0.08),
+    cookDone: () => playBeep(600, 'triangle', 0.2),
+    coin: () => {
+      playBeep(987, 'sine', 0.1);
+      setTimeout(() => playBeep(1318, 'sine', 0.2), 80);
+    },
+    angry: () => playBeep(150, 'sawtooth', 0.3)
+  };
+
+  /* --- Game State --- */
+  let cash = 20;
+  let reputation = 100;
+  let activeTheme = 'Classic';
+  let readyTray = []; // Prepared items on counter
+
+  // 6 Diverse Meals (Beverages & Desserts)
+  const meals = [
+    { id: 'tea', name: 'Black Tea', icon: '🍵', time: 1200, earn: 6, unlockCost: 0, unlocked: true },
+    { id: 'coffee', name: 'Filter Coffee', icon: '☕', time: 2000, earn: 10, unlockCost: 0, unlocked: true },
+    { id: 'latte', name: 'Macchiato', icon: '🥛', time: 2800, earn: 18, unlockCost: 35, unlocked: false },
+    { id: 'croissant', name: 'Croissant', icon: '🥐', time: 2200, earn: 16, unlockCost: 45, unlocked: false },
+    { id: 'donut', name: 'Choco Donut', icon: '🍩', time: 2500, earn: 22, unlockCost: 65, unlocked: false },
+    { id: 'cheesecake', name: 'Cheesecake', icon: '🍰', time: 3500, earn: 35, unlockCost: 100, unlocked: false }
+  ];
+
+  // 6 Character Avatars
+  const characters = [
+    { name: 'Alex', role: 'Student', icon: '🧑‍🎓' },
+    { name: 'Sarah', role: 'Office', icon: '👩‍💼' },
+    { name: 'Leo', role: 'Artist', icon: '👨‍🎨' },
+    { name: 'Elena', role: 'Tourist', icon: '🧳' },
+    { name: 'Brown', role: 'Critic', icon: '🎩' },
+    { name: 'Mike', role: 'Athlete', icon: '🏃' }
+  ];
+
+  // 3 Multi-Customer Tables
+  const tables = [
+    { id: 1, unlocked: true, unlockCost: 0, customer: null, timer: null, patience: 100 },
+    { id: 2, unlocked: false, unlockCost: 30, customer: null, timer: null, patience: 100 },
+    { id: 3, unlocked: false, unlockCost: 75, customer: null, timer: null, patience: 100 }
+  ];
+
+  // Cafe Ambience Upgrades
+  const themes = [
+    { name: 'Neon Lounge', className: 'neon', cost: 60, purchased: false },
+    { name: 'Garden Terrace', className: 'garden', cost: 90, purchased: false }
+  ];
+
+  /* --- Functions --- */
+  function notify(msg) {
+    document.getElementById('notice-box').innerText = msg;
+  }
+
+  function updateHUD() {
+    document.getElementById('cash-val').innerText = '$' + cash;
+    document.getElementById('rep-val').innerText = reputation + '%';
+    document.getElementById('theme-val').innerText = activeTheme;
+  }
+
+  // Multi-Customer Generator (Ensures no duplicate avatars simultaneously)
+  function trySeatCustomer(table) {
+    if (!table.unlocked || table.customer) return;
+
+    // Filter characters that are not already at any table
+    const occupiedNames = tables.filter(t => t.customer).map(t => t.customer.name);
+    const available = characters.filter(c => !occupiedNames.includes(c.name));
+    if (available.length === 0) return;
+
+    const chosenCust = available[Math.floor(Math.random() * available.length)];
+    const unlockedMeals = meals.filter(m => m.unlocked);
+    const chosenMeal = unlockedMeals[Math.floor(Math.random() * unlockedMeals.length)];
+
+    table.customer = {
+      ...chosenCust,
+      order: chosenMeal
+    };
+    table.patience = 100;
+
+    // Start Patience Countdown
+    clearInterval(table.timer);
+    table.timer = setInterval(() => {
+      table.patience -= 2;
+      const bar = document.getElementById(`bar-${table.id}`);
+      if (bar) {
+        bar.style.width = table.patience + '%';
+        if (table.patience < 40) bar.style.backgroundColor = 'var(--accent-gold)';
+        if (table.patience < 20) bar.style.backgroundColor = 'var(--accent-red)';
+      }
+
+      if (table.patience <= 0) {
+        clearInterval(table.timer);
+        soundEffects.angry();
+        reputation = Math.max(0, reputation - 6);
+        notify(`❌ ${table.customer.name} left angry! (-6% Rep)`);
+        table.customer = null;
+        updateHUD();
+        renderTables();
+        setTimeout(() => trySeatCustomer(table), 3000);
+      }
+    }, 350);
+
+    renderTables();
+  }
+
+  function renderTables() {
+    const cont = document.getElementById('tables-container');
+    cont.innerHTML = '';
+
+    tables.forEach(t => {
+      const box = document.createElement('div');
+      if (!t.unlocked) {
+        box.className = 'table-box locked';
+        box.innerHTML = `
+          <div class="table-num">Table ${t.id}</div>
+          <div style="font-size:24px; margin:6px 0;">🔒</div>
+          <small>Locked</small>
+        `;
+      } else if (!t.customer) {
+        box.className = 'table-box';
+        box.innerHTML = `
+          <div class="table-num">Table ${t.id}</div>
+          <div style="font-size:20px; margin:10px 0; color:#888;">Empty</div>
+          <small style="color:#aaa;">Waiting guest...</small>
+        `;
+      } else {
+        box.className = 'table-box';
+        box.innerHTML = `
+          <div class="table-num">Table ${t.id}</div>
+          <div class="cust-avatar">${t.customer.icon}</div>
+          <div class="cust-name">${t.customer.name}</div>
+          <div class="order-tag">${t.customer.order.icon} ${t.customer.order.name}</div>
+          <div class="timer-wrap"><div id="bar-${t.id}" class="timer-bar" style="width:${t.patience}%"></div></div>
+          <button class="serve-table-btn" onclick="serveCustomer(${t.id})">Serve</button>
+        `;
+      }
+      cont.appendChild(box);
+    });
+  }
+
+  // Cooking Mechanism with Delay Progress
+  let cookingInProgress = false;
+  function cookItem(mealId) {
+    const meal = meals.find(m => m.id === mealId);
+    if (!meal || !meal.unlocked || cookingInProgress) return;
+
+    soundEffects.click();
+    cookingInProgress = true;
+    notify(`Brewing/Baking ${meal.name}...`);
+
+    const pBar = document.getElementById(`prog-${meal.id}`);
+    pBar.style.transition = `width ${meal.time}ms linear`;
+    pBar.style.width = '100%';
+
+    setTimeout(() => {
+      soundEffects.cookDone();
+      pBar.style.transition = 'none';
+      pBar.style.width = '0%';
+      readyTray.push(meal);
+      cookingInProgress = false;
+      notify(`Done! ${meal.icon} ${meal.name} is on the tray.`);
+      renderTray();
+    }, meal.time);
+  }
+
+  function renderTray() {
+    const tray = document.getElementById('prep-tray');
+    if (readyTray.length === 0) {
+      tray.innerHTML = `<span style="font-size:11px; color:#888;">No items ready. Brew something!</span>`;
+      return;
+    }
+    tray.innerHTML = '';
+    readyTray.forEach((m, idx) => {
+      const item = document.createElement('div');
+      item.className = 'tray-item';
+      item.innerHTML = `<span>${m.icon} ${m.name}</span> <span style="cursor:pointer; color:red;" onclick="discardTray(${idx})">✖</span>`;
+      tray.appendChild(item);
+    });
+  }
+
+  function discardTray(idx) {
+    readyTray.splice(idx, 1);
+    renderTray();
+  }
+
+  // Serving Tray Item to Specific Table
+  function serveCustomer(tableId) {
+    const table = tables.find(t => t.id === tableId);
+    if (!table || !table.customer) return;
+
+    const neededId = table.customer.order.id;
+    const trayIndex = readyTray.findIndex(item => item.id === neededId);
+
+    if (trayIndex !== -1) {
+      // Correct Item Available
+      readyTray.splice(trayIndex, 1);
+      clearInterval(table.timer);
+      soundEffects.coin();
+      const earned = table.customer.order.earn;
+      cash += earned;
+      reputation = Math.min(100, reputation + 1);
+      notify(`✅ Served ${table.customer.name}! Earned +$${earned}`);
+      table.customer = null;
+      updateHUD();
+      renderTray();
+      renderTables();
+      renderShop();
+      setTimeout(() => trySeatCustomer(table), 2500);
+    } else {
+      soundEffects.angry();
+      notify(`⚠️ You don't have ${table.customer.order.name} on the tray!`);
+    }
+  }
+
+  function renderKitchen() {
+    const grid = document.getElementById('cook-grid');
+    grid.innerHTML = '';
+    meals.forEach(m => {
+      const btn = document.createElement('button');
+      btn.className = `cook-btn ${m.unlocked ? '' : 'disabled'}`;
+      btn.innerHTML = `
+        <span>${m.icon} ${m.name}</span>
+        <small>${m.unlocked ? 'Earn +$' + m.earn : '🔒 Locked'}</small>
+        <div id="prog-${m.id}" class="cook-progress"></div>
+      `;
+      if (m.unlocked) {
+        btn.onclick = () => cookItem(m.id);
+      }
+      grid.appendChild(btn);
+    });
+  }
+
+  /* --- Upgrades & Tycoon Shop --- */
+  function buyUpgrade(type, id) {
+    soundEffects.click();
+    if (type === 'table') {
+      const table = tables.find(t => t.id === id);
+      if (cash >= table.unlockCost) {
+        cash -= table.unlockCost;
+        table.unlocked = true;
+        notify(`🎉 Unlocked Table ${table.id}! More customers incoming!`);
+        setTimeout(() => trySeatCustomer(table), 1000);
+      }
+    } else if (type === 'meal') {
+      const meal = meals.find(m => m.id === id);
+      if (cash >= meal.unlockCost) {
+        cash -= meal.unlockCost;
+        meal.unlocked = true;
+        notify(`🎉 New Recipe Unlocked: ${meal.name}!`);
+        renderKitchen();
+      }
+    } else if (type === 'theme') {
+      const th = themes.find(t => t.className === id);
+      if (cash >= th.cost && !th.purchased) {
+        cash -= th.cost;
+        th.purchased = true;
+        document.body.className = th.className;
+        activeTheme = th.name;
+        notify(`🎨 Cafe Ambience updated to ${th.name}!`);
+      }
+    }
+    updateHUD();
+    renderTables();
+    renderShop();
+  }
+
+  function renderShop() {
+    const list = document.getElementById('shop-list');
+    list.innerHTML = '';
+
+    // Table Expansions
+    tables.forEach(t => {
+      if (!t.unlocked) {
+        const item = document.createElement('div');
+        item.className = 'shop-item';
+        item.innerHTML = `
+          <span>🪑 Table ${t.id} ($${t.unlockCost})</span>
+          <button class="buy-btn" ${cash < t.unlockCost ? 'disabled' : ''} onclick="buyUpgrade('table', ${t.id})">Unlock</button>
+        `;
+        list.appendChild(item);
+      }
+    });
+
+    // Meal Unlocks
+    meals.forEach(m => {
+      if (!m.unlocked) {
+        const item = document.createElement('div');
+        item.className = 'shop-item';
+        item.innerHTML = `
+          <span>${m.icon} ${m.name} ($${m.unlockCost})</span>
+          <button class="buy-btn" ${cash < m.unlockCost ? 'disabled' : ''} onclick="buyUpgrade('meal', '${m.id}')">Unlock</button>
+        `;
+        list.appendChild(item);
+      }
+    });
+
+    // Theme Unlocks
+    themes.forEach(th => {
+      if (!th.purchased) {
+        const item = document.createElement('div');
+        item.className = 'shop-item';
+        item.innerHTML = `
+          <span>🎨 ${th.name} ($${th.cost})</span>
+          <button class="buy-btn" ${cash < th.cost ? 'disabled' : ''} onclick="buyUpgrade('theme', '${th.className}')">Apply</button>
+        `;
+        list.appendChild(item);
+      }
+    });
+
+    if (list.children.length === 0) {
+      list.innerHTML = `<span style="font-size:11px; color:var(--accent-green);">🌟 Empire maximized! All items & tables active.</span>`;
+    }
+  }
+
+  // Auto-seating loops
+  setInterval(() => {
+    tables.forEach(t => {
+      if (t.unlocked && !t.customer) {
+        trySeatCustomer(t);
+      }
+    });
+  }, 3000);
+
+  // Initial Boot
+  updateHUD();
+  renderKitchen();
+  renderTables();
+  renderShop();
+  trySeatCustomer(tables[0]);
+</script>
+
+</body>
+</html>
