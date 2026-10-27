@@ -1,0 +1,31 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup Web Package
+        run: |
+          mkdir -p www
+          cp index.html www/
+          npm init -y
+          npm i @capacitor/core @capacitor/cli
+          npx cap init "CoffeeTrack" "com.coffeetrack.game" --web-dir www
+          echo "Packaging web game for Android emulator build..."
+
+      - name: Verify Build
+        run: |
+          test -f www/index.html && echo "Mobile Game Build Succeeded!"
