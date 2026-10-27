@@ -6,34 +6,31 @@
   <title>Coffee Track Tycoon</title>
   <style>
     :root {
-      --bg-main: #1e130c;
-      --panel-bg: #2d1c13;
-      --card-bg: #3d271b;
-      --accent-gold: #f4a261;
+      --counter-wood: #5e3023;
+      --counter-top: #895737;
+      --wall-bg: #d4a373;
+      --accent-gold: #ffb703;
       --accent-green: #2a9d8f;
       --accent-red: #e76f51;
-      --text-light: #fefae0;
-      --border-color: #633f2a;
+      --font-color: #2b2d42;
     }
-    body.neon {
-      --bg-main: #0d0b18;
-      --panel-bg: #17142b;
-      --card-bg: #231f42;
+
+    body.neon-theme {
+      --counter-wood: #240046;
+      --counter-top: #3c096c;
+      --wall-bg: #10002b;
       --accent-gold: #00f0ff;
       --accent-green: #39ff14;
-      --accent-red: #ff007f;
-      --text-light: #ffffff;
-      --border-color: #443c7a;
+      --font-color: #ffffff;
     }
-    body.garden {
-      --bg-main: #132a13;
-      --panel-bg: #1e3f20;
-      --card-bg: #2d5a30;
-      --accent-gold: #ecf39e;
-      --accent-green: #588157;
-      --accent-red: #d90429;
-      --text-light: #f8f9fa;
-      --border-color: #3f7d44;
+
+    body.garden-theme {
+      --counter-wood: #283618;
+      --counter-top: #606c38;
+      --wall-bg: #ccd5ae;
+      --accent-gold: #dda15e;
+      --accent-green: #386641;
+      --font-color: #1b4332;
     }
 
     * {
@@ -41,170 +38,216 @@
       margin: 0;
       padding: 0;
       user-select: none;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
     }
+
     body {
-      background-color: var(--bg-main);
-      color: var(--text-light);
+      background: #111;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 6px;
-      transition: background 0.3s ease;
+      color: #fff;
     }
-    #game-container {
+
+    #app {
       width: 100%;
-      max-width: 480px;
-      background: var(--panel-bg);
-      border: 2px solid var(--border-color);
-      border-radius: 14px;
+      max-width: 440px;
+      height: 96vh;
+      max-height: 820px;
+      position: relative;
+      background: var(--wall-bg);
+      border: 3px solid #333;
+      border-radius: 18px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: background 0.4s ease;
     }
+
+    /* RESTAURANT AMBIENCE GRAPHICS (Bricks, Windows, Blackboard) */
+    .cafe-wall-deco {
+      position: absolute;
+      top: 45px;
+      left: 0;
+      right: 0;
+      height: 90px;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image: 
+        radial-gradient(#444 15%, transparent 16%),
+        radial-gradient(#444 15%, transparent 16%);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+    }
+    .chalkboard {
+      width: 120px;
+      background: #1a1a1a;
+      border: 3px solid #8b5a2b;
+      border-radius: 6px;
+      text-align: center;
+      padding: 3px;
+      font-size: 9px;
+      color: #eee;
+      margin: 0 auto 4px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    }
+
+    /* TOP STATUS BAR */
     header {
-      background: rgba(0,0,0,0.3);
-      padding: 10px 14px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
-      border-bottom: 2px solid var(--border-color);
+      align-items: center;
       font-size: 13px;
       font-weight: bold;
+      z-index: 5;
     }
-    header span { color: var(--accent-gold); }
+    .badge-gold { color: #ffd166; }
+    .hearts { font-size: 14px; letter-spacing: 2px; }
 
-    /* Tables & Dining Area */
-    #dining-hall {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 100%);
-    }
-    .area-header {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--accent-gold);
-      margin-bottom: 2px;
-    }
-    .tables-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .table-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      min-height: 140px;
-      padding: 8px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      text-align: center;
-      position: relative;
-    }
-    .table-box.locked {
-      opacity: 0.5;
-      justify-content: center;
-      background: rgba(0,0,0,0.3);
-    }
-    .table-num {
-      font-size: 10px;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-    }
-    .cust-avatar { font-size: 30px; margin: 2px 0; }
-    .cust-name { font-size: 11px; font-weight: bold; }
-    .order-tag {
-      background: #fff;
-      color: #111;
-      padding: 3px 6px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: bold;
-      margin-top: 4px;
-      border: 1px solid #ddd;
-    }
-    .timer-wrap {
-      width: 100%;
-      height: 6px;
-      background: #222;
-      border-radius: 3px;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .timer-bar {
-      height: 100%;
-      width: 100%;
-      background: var(--accent-green);
-      transition: width 0.15s linear, background-color 0.3s;
-    }
-    .serve-table-btn {
-      margin-top: 6px;
-      background: var(--accent-green);
-      border: none;
-      color: #fff;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    /* Kitchen Preparation */
-    #kitchen-hall {
-      padding: 10px 12px;
-      border-top: 2px solid var(--border-color);
-    }
-    .prep-tray {
-      background: rgba(0,0,0,0.25);
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
+    /* DINING AREA & TABLES */
+    #dining-section {
+      flex: 1.1;
       padding: 8px;
-      margin-bottom: 10px;
-      min-height: 48px;
+      position: relative;
+      z-index: 2;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
+      flex-direction: column;
+      justify-content: flex-end;
     }
-    .tray-item {
-      background: var(--card-bg);
-      border: 1px solid var(--accent-gold);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .cook-grid {
+    .tables-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
-    .cook-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-light);
-      padding: 8px 4px;
-      border-radius: 8px;
-      cursor: pointer;
+    .table-card {
+      background: rgba(255,255,255,0.92);
+      color: #222;
+      border-radius: 12px;
+      min-height: 145px;
+      padding: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      border: 2px solid rgba(0,0,0,0.15);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+    .table-card.locked {
+      background: rgba(0,0,0,0.4);
+      color: #ddd;
+      border: 2px dashed #666;
+      justify-content: center;
+    }
+    .table-title { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #777; }
+    .customer-avatar { font-size: 32px; line-height: 1.1; }
+    .customer-name { font-size: 11px; font-weight: bold; color: #333; }
+    .order-bubble {
+      background: #ffe3a8;
+      color: #4a2c1a;
+      border: 1px solid #d4a373;
+      padding: 3px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: bold;
+      width: 100%;
+      text-align: center;
+    }
+    .patience-track {
+      width: 100%;
+      height: 5px;
+      background: #ddd;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 3px;
+    }
+    .patience-bar {
+      height: 100%;
+      width: 100%;
+      background: #06d6a0;
+      transition: width 0.2s linear;
+    }
+    .serve-btn {
+      background: #2a9d8f;
+      color: #fff;
+      border: none;
+      width: 100%;
+      padding: 5px 0;
       font-size: 11px;
       font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* WOODEN COUNTER & TRAY */
+    #counter-section {
+      background: var(--counter-top);
+      border-top: 4px solid var(--counter-wood);
+      padding: 8px 10px;
+      z-index: 3;
+    }
+    .counter-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: #ffe8d6;
+      margin-bottom: 4px;
+    }
+    .ready-tray {
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      padding: 6px;
+      min-height: 40px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      align-items: center;
+    }
+    .tray-item {
+      background: #fff;
+      color: #222;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* KITCHEN STATIONS */
+    #kitchen-section {
+      background: var(--counter-wood);
+      padding: 8px 10px 12px;
+      z-index: 3;
+    }
+    .stations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .cook-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 8px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
       position: relative;
       overflow: hidden;
+      font-size: 10px;
+      font-weight: bold;
     }
-    .cook-btn.disabled {
-      opacity: 0.4;
+    .cook-card.locked {
+      opacity: 0.35;
       cursor: not-allowed;
     }
     .cook-progress {
@@ -213,216 +256,379 @@
       left: 0;
       height: 3px;
       width: 0%;
-      background: var(--accent-gold);
+      background: #ffd166;
     }
 
-    /* Management & Upgrades */
-    #shop-hall {
-      padding: 10px 12px;
-      background: rgba(0,0,0,0.3);
-      border-top: 2px solid var(--border-color);
+    /* NOTIFICATION TOAST */
+    #toast-msg {
+      position: absolute;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: #ffd166;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 12px;
+      z-index: 10;
+      display: none;
     }
-    .shop-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
-      max-height: 110px;
+
+    /* MODAL OVERLAYS (Title, Score, Shop) */
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(18, 12, 9, 0.94);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+      text-align: center;
+    }
+    .game-logo {
+      font-size: 50px;
+      margin-bottom: 8px;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .btn-main {
+      background: #ffd166;
+      color: #2b1d16;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 12px 28px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 15px rgba(255, 209, 102, 0.4);
+    }
+    .btn-secondary {
+      background: #2a9d8f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      margin: 6px;
+    }
+    .shop-scroll {
+      width: 100%;
+      max-height: 320px;
       overflow-y: auto;
+      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .shop-item {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 6px 8px;
-      border-radius: 6px;
+    .shop-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 10px;
+      font-size: 12px;
+      text-align: left;
     }
-    .buy-btn {
-      background: var(--accent-gold);
-      color: #111;
+    .shop-buy-btn {
+      background: #ffd166;
       border: none;
-      padding: 4px 6px;
-      border-radius: 4px;
+      color: #222;
       font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
     }
-    .buy-btn:disabled {
+    .shop-buy-btn:disabled {
       background: #555;
       color: #888;
       cursor: not-allowed;
-    }
-    #notice-box {
-      font-size: 11px;
-      color: var(--accent-gold);
-      text-align: center;
-      padding: 4px;
-      min-height: 20px;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-<div id="game-container">
+<div id="app">
+  <div class="cafe-wall-deco"></div>
+
+  <!-- STATUS HEADER -->
   <header>
-    <div>Cash: <span id="cash-val">$20</span></div>
-    <div>Reputation: <span id="rep-val">100%</span></div>
-    <div>Theme: <span id="theme-val">Classic</span></div>
+    <div>Day: <span id="day-val" class="badge-gold">1</span></div>
+    <div>Time: <span id="clock-val" class="badge-gold">30s</span></div>
+    <div>Cash: <span id="cash-val" class="badge-gold">$20</span></div>
+    <div id="lives-val" class="hearts">❤️❤️❤️</div>
   </header>
 
-  <div id="notice-box">Welcome to Coffee Track Tycoon!</div>
+  <div id="toast-msg"></div>
 
-  <!-- Ambience: Dining Hall with Multi-Customers -->
-  <section id="dining-hall">
-    <div class="area-header">Dining Area (Tables)</div>
-    <div class="tables-container" id="tables-container">
-      <!-- 3 Tables rendered by JS -->
+  <!-- DINING AREA -->
+  <section id="dining-section">
+    <div class="chalkboard">☕ Freshly Brewed Coffee & Pastries</div>
+    <div class="tables-grid" id="tables-container"></div>
+  </section>
+
+  <!-- WOOD COUNTER / TRAY -->
+  <section id="counter-section">
+    <div class="counter-label">🍽️ Counter Tray (Tap Serve):</div>
+    <div class="ready-tray" id="ready-tray">
+      <span style="font-size:10px; color:#ddd;">No meals ready. Tap below to cook!</span>
     </div>
   </section>
 
-  <!-- Kitchen: Cooking & Serving Ready Tray -->
-  <section id="kitchen-hall">
-    <div class="area-header">Ready Tray (Tap table to serve):</div>
-    <div class="prep-tray" id="prep-tray">
-      <span style="font-size: 11px; color: #888;">No items ready. Brew something!</span>
-    </div>
-
-    <div class="area-header">Brewing & Cooking Stations:</div>
-    <div class="cook-grid" id="cook-grid">
-      <!-- Meals rendered by JS -->
-    </div>
+  <!-- KITCHEN STATIONS -->
+  <section id="kitchen-section">
+    <div class="counter-label" style="margin-bottom:6px;">👨‍🍳 Kitchen Stations:</div>
+    <div class="stations-grid" id="stations-container"></div>
   </section>
 
-  <!-- Tycoon Management: Tables, Recipes, Themes -->
-  <section id="shop-hall">
-    <div class="area-header">Upgrades & Cafe Expansion</div>
-    <div class="shop-list" id="shop-list">
-      <!-- Upgrades rendered by JS -->
+  <!-- 1. START / TITLE SCREEN -->
+  <div id="start-screen" class="screen-overlay">
+    <div class="game-logo">☕🥐</div>
+    <h1 style="color:#ffd166; font-size:24px;">COFFEE TRACK</h1>
+    <p style="font-size:12px; color:#ddd; margin:6px 0 14px;">Restaurant Tycoon Simulator</p>
+    <p style="font-size:11px; color:#bbb; max-width:280px; line-height:1.4;">
+      Serve customers before patience runs out.<br>Survive the 30-second shift!<br>Don't lose your 3 hearts!
+    </p>
+    <button class="btn-main" onclick="startShift()">▶ PLAY SHIFT 1</button>
+  </div>
+
+  <!-- 2. SHIFT SUMMARY / SCORE SCREEN -->
+  <div id="summary-screen" class="screen-overlay" style="display:none;">
+    <h2 id="summary-title" style="color:#ffd166; font-size:22px;">SHIFT FINISHED!</h2>
+    <p id="summary-desc" style="font-size:12px; color:#ddd; margin:8px 0 15px;">Great job serving today's guests.</p>
+    
+    <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:12px 20px; width:80%; margin-bottom:15px; font-size:13px; line-height:1.8;">
+      <div>Earned Cash: <b id="sum-earned" style="color:#ffd166;">+$0</b></div>
+      <div>Total Bank: <b id="sum-total" style="color:#ffd166;">$20</b></div>
+      <div>Customers Served: <b id="sum-customers" style="color:#06d6a0;">0</b></div>
     </div>
-  </section>
+
+    <div>
+      <button class="btn-secondary" onclick="openShop()">🏪 SHOP</button>
+      <button class="btn-main" style="margin-top:0;" id="next-shift-btn" onclick="nextShift()">NEXT SHIFT ❯</button>
+    </div>
+  </div>
+
+  <!-- 3. SHOP MODAL -->
+  <div id="shop-screen" class="screen-overlay" style="display:none;">
+    <h2 style="color:#ffd166; font-size:20px;">CAFE UPGRADES</h2>
+    <p style="font-size:11px; color:#ddd;">Unlock items, tables & themes to earn more!</p>
+    <div class="shop-scroll" id="shop-items-box"></div>
+    <button class="btn-secondary" onclick="closeShop()">⬅ BACK TO MENU</button>
+  </div>
 </div>
 
 <script>
-  /* --- Synthetic Sound Effects (Web Audio API) --- */
+  /* --- Synthetic SFX --- */
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playBeep(freq, type, duration) {
+  function playTone(freq, type, dur) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     try {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = type;
       osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start();
-      osc.stop(audioCtx.currentTime + duration);
+      osc.stop(audioCtx.currentTime + dur);
     } catch(e){}
   }
-  const soundEffects = {
-    click: () => playBeep(400, 'sine', 0.08),
-    cookDone: () => playBeep(600, 'triangle', 0.2),
-    coin: () => {
-      playBeep(987, 'sine', 0.1);
-      setTimeout(() => playBeep(1318, 'sine', 0.2), 80);
-    },
-    angry: () => playBeep(150, 'sawtooth', 0.3)
+  const sfx = {
+    click: () => playTone(500, 'sine', 0.05),
+    cookDone: () => playTone(650, 'triangle', 0.15),
+    coin: () => { playTone(987, 'sine', 0.08); setTimeout(() => playTone(1318, 'sine', 0.18), 70); },
+    hurt: () => playTone(140, 'sawtooth', 0.25),
+    fanfare: () => { playTone(523, 'sine', 0.1); setTimeout(() => playTone(659, 'sine', 0.15), 120); }
   };
 
   /* --- Game State --- */
+  let currentDay = 1;
   let cash = 20;
-  let reputation = 100;
-  let activeTheme = 'Classic';
-  let readyTray = []; // Prepared items on counter
+  let shiftEarned = 0;
+  let shiftServed = 0;
+  let lives = 3;
+  let shiftTimer = 30;
+  let isShiftActive = false;
+  let readyTray = [];
 
-  // 6 Diverse Meals (Beverages & Desserts)
-  const meals = [
-    { id: 'tea', name: 'Black Tea', icon: '🍵', time: 1200, earn: 6, unlockCost: 0, unlocked: true },
-    { id: 'coffee', name: 'Filter Coffee', icon: '☕', time: 2000, earn: 10, unlockCost: 0, unlocked: true },
-    { id: 'latte', name: 'Macchiato', icon: '🥛', time: 2800, earn: 18, unlockCost: 35, unlocked: false },
-    { id: 'croissant', name: 'Croissant', icon: '🥐', time: 2200, earn: 16, unlockCost: 45, unlocked: false },
-    { id: 'donut', name: 'Choco Donut', icon: '🍩', time: 2500, earn: 22, unlockCost: 65, unlocked: false },
-    { id: 'cheesecake', name: 'Cheesecake', icon: '🍰', time: 3500, earn: 35, unlockCost: 100, unlocked: false }
+  // 6 Meals (Beverages + Bakery)
+  const menu = [
+    { id: 'tea', name: 'Black Tea', icon: '🍵', time: 1000, earn: 6, cost: 0, unlocked: true },
+    { id: 'coffee', name: 'Filter Coffee', icon: '☕', time: 1500, earn: 10, cost: 0, unlocked: true },
+    { id: 'latte', name: 'Latte', icon: '🥛', time: 2200, earn: 18, cost: 35, unlocked: false },
+    { id: 'croissant', name: 'Croissant', icon: '🥐', time: 1800, earn: 16, cost: 45, unlocked: false },
+    { id: 'donut', name: 'Donut', icon: '🍩', time: 2000, earn: 22, cost: 65, unlocked: false },
+    { id: 'cheesecake', name: 'Cheesecake', icon: '🍰', time: 2600, earn: 35, cost: 95, unlocked: false }
   ];
 
-  // 6 Character Avatars
-  const characters = [
-    { name: 'Alex', role: 'Student', icon: '🧑‍🎓' },
-    { name: 'Sarah', role: 'Office', icon: '👩‍💼' },
-    { name: 'Leo', role: 'Artist', icon: '👨‍🎨' },
-    { name: 'Elena', role: 'Tourist', icon: '🧳' },
-    { name: 'Brown', role: 'Critic', icon: '🎩' },
-    { name: 'Mike', role: 'Athlete', icon: '🏃' }
+  // Avatars
+  const avatars = [
+    { name: 'Alex', icon: '🧑‍🎓' },
+    { name: 'Sarah', icon: '👩‍💼' },
+    { name: 'Leo', icon: '👨‍🎨' },
+    { name: 'Elena', icon: '🧳' },
+    { name: 'Brown', icon: '🎩' },
+    { name: 'Mike', icon: '🏃' }
   ];
 
-  // 3 Multi-Customer Tables
+  // Tables
   const tables = [
-    { id: 1, unlocked: true, unlockCost: 0, customer: null, timer: null, patience: 100 },
-    { id: 2, unlocked: false, unlockCost: 30, customer: null, timer: null, patience: 100 },
-    { id: 3, unlocked: false, unlockCost: 75, customer: null, timer: null, patience: 100 }
+    { id: 1, unlocked: true, cost: 0, customer: null, timer: null, patience: 100 },
+    { id: 2, unlocked: false, cost: 30, customer: null, timer: null, patience: 100 },
+    { id: 3, unlocked: false, cost: 60, customer: null, timer: null, patience: 100 }
   ];
 
-  // Cafe Ambience Upgrades
+  // Themes
   const themes = [
-    { name: 'Neon Lounge', className: 'neon', cost: 60, purchased: false },
-    { name: 'Garden Terrace', className: 'garden', cost: 90, purchased: false }
+    { name: 'Neon Lounge', classId: 'neon-theme', cost: 50, purchased: false },
+    { name: 'Garden Terrace', classId: 'garden-theme', cost: 75, purchased: false }
   ];
 
-  /* --- Functions --- */
-  function notify(msg) {
-    document.getElementById('notice-box').innerText = msg;
+  function showToast(msg) {
+    const el = document.getElementById('toast-msg');
+    el.innerText = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 1800);
   }
 
   function updateHUD() {
+    document.getElementById('day-val').innerText = currentDay;
+    document.getElementById('clock-val').innerText = shiftTimer + 's';
     document.getElementById('cash-val').innerText = '$' + cash;
-    document.getElementById('rep-val').innerText = reputation + '%';
-    document.getElementById('theme-val').innerText = activeTheme;
+    let heartsStr = '';
+    for (let i = 0; i < lives; i++) heartsStr += '❤️';
+    for (let i = lives; i < 3; i++) heartsStr += '🖤';
+    document.getElementById('lives-val').innerText = heartsStr;
   }
 
-  // Multi-Customer Generator (Ensures no duplicate avatars simultaneously)
-  function trySeatCustomer(table) {
-    if (!table.unlocked || table.customer) return;
+  /* --- Game Loop & Shifts --- */
+  let gameInterval = null;
 
-    // Filter characters that are not already at any table
-    const occupiedNames = tables.filter(t => t.customer).map(t => t.customer.name);
-    const available = characters.filter(c => !occupiedNames.includes(c.name));
+  function startShift() {
+    sfx.click();
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('summary-screen').style.display = 'none';
+
+    lives = 3;
+    shiftTimer = 30;
+    shiftEarned = 0;
+    shiftServed = 0;
+    isShiftActive = true;
+    readyTray = [];
+
+    renderTray();
+    renderStations();
+    renderTables();
+    updateHUD();
+
+    clearInterval(gameInterval);
+    gameInterval = setInterval(() => {
+      if (!isShiftActive) return;
+      shiftTimer--;
+      updateHUD();
+
+      // Check empty tables to seat guests
+      tables.forEach(t => {
+        if (t.unlocked && !t.customer && Math.random() < 0.4) {
+          seatCustomer(t);
+        }
+      });
+
+      if (shiftTimer <= 0) {
+        endShift(true);
+      }
+    }, 1000);
+
+    // Initial seat
+    tables.forEach(t => { if(t.unlocked) seatCustomer(t); });
+  }
+
+  function endShift(success) {
+    isShiftActive = false;
+    clearInterval(gameInterval);
+    tables.forEach(t => { clearInterval(t.timer); t.customer = null; });
+    renderTables();
+
+    const summary = document.getElementById('summary-screen');
+    const title = document.getElementById('summary-title');
+    const desc = document.getElementById('summary-desc');
+    const nxtBtn = document.getElementById('next-shift-btn');
+
+    document.getElementById('sum-earned').innerText = '+$' + shiftEarned;
+    document.getElementById('sum-total').innerText = '$' + cash;
+    document.getElementById('sum-customers').innerText = shiftServed;
+
+    if (success) {
+      sfx.fanfare();
+      title.innerText = `DAY ${currentDay} COMPLETED!`;
+      title.style.color = '#ffd166';
+      desc.innerText = "Shift closed successfully. Upgrade cafe before next day!";
+      nxtBtn.innerText = `START DAY ${currentDay + 1} ❯`;
+      nxtBtn.onclick = () => { currentDay++; startShift(); };
+    } else {
+      sfx.hurt();
+      title.innerText = `SHIFT FAILED!`;
+      title.style.color = '#e76f51';
+      desc.innerText = "You lost all 3 hearts! Try this shift again or buy upgrades.";
+      nxtBtn.innerText = "RETRY SHIFT ↺";
+      nxtBtn.onclick = () => startShift();
+    }
+    summary.style.display = 'flex';
+  }
+
+  /* --- Customer Management --- */
+  function seatCustomer(table) {
+    if (table.customer || !isShiftActive) return;
+
+    const occupied = tables.filter(t => t.customer).map(t => t.customer.name);
+    const available = avatars.filter(a => !occupied.includes(a.name));
     if (available.length === 0) return;
 
-    const chosenCust = available[Math.floor(Math.random() * available.length)];
-    const unlockedMeals = meals.filter(m => m.unlocked);
+    const chosenAvatar = available[Math.floor(Math.random() * available.length)];
+    const unlockedMeals = menu.filter(m => m.unlocked);
     const chosenMeal = unlockedMeals[Math.floor(Math.random() * unlockedMeals.length)];
 
-    table.customer = {
-      ...chosenCust,
-      order: chosenMeal
-    };
+    table.customer = { ...chosenAvatar, order: chosenMeal };
     table.patience = 100;
 
-    // Start Patience Countdown
     clearInterval(table.timer);
     table.timer = setInterval(() => {
-      table.patience -= 2;
-      const bar = document.getElementById(`bar-${table.id}`);
+      if (!isShiftActive) return;
+      table.patience -= 3;
+      const bar = document.getElementById(`pbar-${table.id}`);
       if (bar) {
         bar.style.width = table.patience + '%';
-        if (table.patience < 40) bar.style.backgroundColor = 'var(--accent-gold)';
-        if (table.patience < 20) bar.style.backgroundColor = 'var(--accent-red)';
+        if (table.patience < 40) bar.style.backgroundColor = '#ffd166';
+        if (table.patience < 20) bar.style.backgroundColor = '#e76f51';
       }
 
       if (table.patience <= 0) {
         clearInterval(table.timer);
-        soundEffects.angry();
-        reputation = Math.max(0, reputation - 6);
-        notify(`❌ ${table.customer.name} left angry! (-6% Rep)`);
         table.customer = null;
+        sfx.hurt();
+        lives--;
+        showToast("💔 Customer left! -1 Life");
         updateHUD();
         renderTables();
-        setTimeout(() => trySeatCustomer(table), 3000);
+        if (lives <= 0) endShift(false);
       }
-    }, 350);
+    }, 400);
 
     renderTables();
   }
@@ -430,75 +636,65 @@
   function renderTables() {
     const cont = document.getElementById('tables-container');
     cont.innerHTML = '';
-
     tables.forEach(t => {
-      const box = document.createElement('div');
+      const card = document.createElement('div');
       if (!t.unlocked) {
-        box.className = 'table-box locked';
-        box.innerHTML = `
-          <div class="table-num">Table ${t.id}</div>
-          <div style="font-size:24px; margin:6px 0;">🔒</div>
-          <small>Locked</small>
-        `;
+        card.className = 'table-card locked';
+        card.innerHTML = `<span style="font-size:22px;">🔒</span><small style="margin-top:4px;">Table ${t.id}<br>(Shop)</small>`;
       } else if (!t.customer) {
-        box.className = 'table-box';
-        box.innerHTML = `
-          <div class="table-num">Table ${t.id}</div>
-          <div style="font-size:20px; margin:10px 0; color:#888;">Empty</div>
-          <small style="color:#aaa;">Waiting guest...</small>
-        `;
+        card.className = 'table-card';
+        card.innerHTML = `<span class="table-title">Table ${t.id}</span><span style="font-size:24px; color:#aaa; margin:14px 0;">🪑</span><small style="color:#888;">Empty</small>`;
       } else {
-        box.className = 'table-box';
-        box.innerHTML = `
-          <div class="table-num">Table ${t.id}</div>
-          <div class="cust-avatar">${t.customer.icon}</div>
-          <div class="cust-name">${t.customer.name}</div>
-          <div class="order-tag">${t.customer.order.icon} ${t.customer.order.name}</div>
-          <div class="timer-wrap"><div id="bar-${t.id}" class="timer-bar" style="width:${t.patience}%"></div></div>
-          <button class="serve-table-btn" onclick="serveCustomer(${t.id})">Serve</button>
+        card.className = 'table-card';
+        card.innerHTML = `
+          <span class="table-title">Table ${t.id}</span>
+          <div class="customer-avatar">${t.customer.icon}</div>
+          <div class="customer-name">${t.customer.name}</div>
+          <div class="order-bubble">${t.customer.order.icon} ${t.customer.order.name}</div>
+          <div class="patience-track"><div id="pbar-${t.id}" class="patience-bar" style="width:${t.patience}%"></div></div>
+          <button class="serve-btn" onclick="serveOrder(${t.id})">Serve</button>
         `;
       }
-      cont.appendChild(box);
+      cont.appendChild(card);
     });
   }
 
-  // Cooking Mechanism with Delay Progress
-  let cookingInProgress = false;
-  function cookItem(mealId) {
-    const meal = meals.find(m => m.id === mealId);
-    if (!meal || !meal.unlocked || cookingInProgress) return;
+  /* --- Cooking & Serving --- */
+  let cooking = false;
+  function cook(mealId) {
+    if (!isShiftActive || cooking) return;
+    const meal = menu.find(m => m.id === mealId);
+    if (!meal || !meal.unlocked) return;
 
-    soundEffects.click();
-    cookingInProgress = true;
-    notify(`Brewing/Baking ${meal.name}...`);
-
-    const pBar = document.getElementById(`prog-${meal.id}`);
-    pBar.style.transition = `width ${meal.time}ms linear`;
-    pBar.style.width = '100%';
+    cooking = true;
+    sfx.click();
+    showToast(`Brewing ${meal.name}...`);
+    const p = document.getElementById(`prog-${meal.id}`);
+    p.style.transition = `width ${meal.time}ms linear`;
+    p.style.width = '100%';
 
     setTimeout(() => {
-      soundEffects.cookDone();
-      pBar.style.transition = 'none';
-      pBar.style.width = '0%';
+      sfx.cookDone();
+      p.style.transition = 'none';
+      p.style.width = '0%';
       readyTray.push(meal);
-      cookingInProgress = false;
-      notify(`Done! ${meal.icon} ${meal.name} is on the tray.`);
+      cooking = false;
       renderTray();
     }, meal.time);
   }
 
   function renderTray() {
-    const tray = document.getElementById('prep-tray');
+    const tray = document.getElementById('ready-tray');
     if (readyTray.length === 0) {
-      tray.innerHTML = `<span style="font-size:11px; color:#888;">No items ready. Brew something!</span>`;
+      tray.innerHTML = `<span style="font-size:10px; color:#ddd;">No meals ready. Tap below to cook!</span>`;
       return;
     }
     tray.innerHTML = '';
     readyTray.forEach((m, idx) => {
-      const item = document.createElement('div');
-      item.className = 'tray-item';
-      item.innerHTML = `<span>${m.icon} ${m.name}</span> <span style="cursor:pointer; color:red;" onclick="discardTray(${idx})">✖</span>`;
-      tray.appendChild(item);
+      const d = document.createElement('div');
+      d.className = 'tray-item';
+      d.innerHTML = `<span>${m.icon} ${m.name}</span> <span style="cursor:pointer; color:#d90429;" onclick="discardTray(${idx})">✖</span>`;
+      tray.appendChild(d);
     });
   }
 
@@ -507,150 +703,141 @@
     renderTray();
   }
 
-  // Serving Tray Item to Specific Table
-  function serveCustomer(tableId) {
+  function serveOrder(tableId) {
     const table = tables.find(t => t.id === tableId);
     if (!table || !table.customer) return;
 
-    const neededId = table.customer.order.id;
-    const trayIndex = readyTray.findIndex(item => item.id === neededId);
+    const reqId = table.customer.order.id;
+    const idx = readyTray.findIndex(item => item.id === reqId);
 
-    if (trayIndex !== -1) {
-      // Correct Item Available
-      readyTray.splice(trayIndex, 1);
+    if (idx !== -1) {
+      readyTray.splice(idx, 1);
       clearInterval(table.timer);
-      soundEffects.coin();
-      const earned = table.customer.order.earn;
-      cash += earned;
-      reputation = Math.min(100, reputation + 1);
-      notify(`✅ Served ${table.customer.name}! Earned +$${earned}`);
+      sfx.coin();
+      const earn = table.customer.order.earn;
+      cash += earn;
+      shiftEarned += earn;
+      shiftServed++;
+      showToast(`+ $${earn} Earned!`);
       table.customer = null;
       updateHUD();
       renderTray();
       renderTables();
-      renderShop();
-      setTimeout(() => trySeatCustomer(table), 2500);
     } else {
-      soundEffects.angry();
-      notify(`⚠️ You don't have ${table.customer.order.name} on the tray!`);
+      sfx.hurt();
+      showToast(`⚠️ You don't have ${table.customer.order.name}!`);
     }
   }
 
-  function renderKitchen() {
-    const grid = document.getElementById('cook-grid');
-    grid.innerHTML = '';
-    meals.forEach(m => {
-      const btn = document.createElement('button');
-      btn.className = `cook-btn ${m.unlocked ? '' : 'disabled'}`;
-      btn.innerHTML = `
-        <span>${m.icon} ${m.name}</span>
-        <small>${m.unlocked ? 'Earn +$' + m.earn : '🔒 Locked'}</small>
+  function renderStations() {
+    const box = document.getElementById('stations-container');
+    box.innerHTML = '';
+    menu.forEach(m => {
+      const card = document.createElement('div');
+      card.className = `cook-card ${m.unlocked ? '' : 'locked'}`;
+      card.innerHTML = `
+        <span style="font-size:18px;">${m.icon}</span>
+        <span>${m.name}</span>
+        <small style="color:#ffd166;">${m.unlocked ? '+$' + m.earn : '🔒 Locked'}</small>
         <div id="prog-${m.id}" class="cook-progress"></div>
       `;
-      if (m.unlocked) {
-        btn.onclick = () => cookItem(m.id);
-      }
-      grid.appendChild(btn);
+      if (m.unlocked) card.onclick = () => cook(m.id);
+      box.appendChild(card);
     });
   }
 
-  /* --- Upgrades & Tycoon Shop --- */
-  function buyUpgrade(type, id) {
-    soundEffects.click();
+  /* --- Shop System --- */
+  function openShop() {
+    sfx.click();
+    document.getElementById('shop-screen').style.display = 'flex';
+    renderShopItems();
+  }
+
+  function closeShop() {
+    sfx.click();
+    document.getElementById('shop-screen').style.display = 'none';
+  }
+
+  function buyShopItem(type, id) {
+    sfx.coin();
     if (type === 'table') {
-      const table = tables.find(t => t.id === id);
-      if (cash >= table.unlockCost) {
-        cash -= table.unlockCost;
-        table.unlocked = true;
-        notify(`🎉 Unlocked Table ${table.id}! More customers incoming!`);
-        setTimeout(() => trySeatCustomer(table), 1000);
+      const t = tables.find(tbl => tbl.id === id);
+      if (cash >= t.cost) {
+        cash -= t.cost;
+        t.unlocked = true;
       }
     } else if (type === 'meal') {
-      const meal = meals.find(m => m.id === id);
-      if (cash >= meal.unlockCost) {
-        cash -= meal.unlockCost;
-        meal.unlocked = true;
-        notify(`🎉 New Recipe Unlocked: ${meal.name}!`);
-        renderKitchen();
+      const m = menu.find(ml => ml.id === id);
+      if (cash >= m.cost) {
+        cash -= m.cost;
+        m.unlocked = true;
       }
     } else if (type === 'theme') {
-      const th = themes.find(t => t.className === id);
+      const th = themes.find(tm => tm.classId === id);
       if (cash >= th.cost && !th.purchased) {
         cash -= th.cost;
         th.purchased = true;
-        document.body.className = th.className;
-        activeTheme = th.name;
-        notify(`🎨 Cafe Ambience updated to ${th.name}!`);
+        document.body.className = th.classId;
       }
     }
     updateHUD();
+    renderStations();
     renderTables();
-    renderShop();
+    renderShopItems();
   }
 
-  function renderShop() {
-    const list = document.getElementById('shop-list');
-    list.innerHTML = '';
+  function renderShopItems() {
+    const box = document.getElementById('shop-items-box');
+    box.innerHTML = '';
 
-    // Table Expansions
+    // Tables
     tables.forEach(t => {
       if (!t.unlocked) {
         const item = document.createElement('div');
-        item.className = 'shop-item';
+        item.className = 'shop-card';
         item.innerHTML = `
-          <span>🪑 Table ${t.id} ($${t.unlockCost})</span>
-          <button class="buy-btn" ${cash < t.unlockCost ? 'disabled' : ''} onclick="buyUpgrade('table', ${t.id})">Unlock</button>
+          <div><b>🪑 Table ${t.id}</b><br><small>Seat more customers</small></div>
+          <button class="shop-buy-btn" ${cash < t.cost ? 'disabled' : ''} onclick="buyShopItem('table', ${t.id})">Unlock ($${t.cost})</button>
         `;
-        list.appendChild(item);
+        box.appendChild(item);
       }
     });
 
-    // Meal Unlocks
-    meals.forEach(m => {
+    // Recipes
+    menu.forEach(m => {
       if (!m.unlocked) {
         const item = document.createElement('div');
-        item.className = 'shop-item';
+        item.className = 'shop-card';
         item.innerHTML = `
-          <span>${m.icon} ${m.name} ($${m.unlockCost})</span>
-          <button class="buy-btn" ${cash < m.unlockCost ? 'disabled' : ''} onclick="buyUpgrade('meal', '${m.id}')">Unlock</button>
+          <div><b>${m.icon} ${m.name}</b><br><small>Earn +$${m.earn} per order</small></div>
+          <button class="shop-buy-btn" ${cash < m.cost ? 'disabled' : ''} onclick="buyShopItem('meal', '${m.id}')">Unlock ($${m.cost})</button>
         `;
-        list.appendChild(item);
+        box.appendChild(item);
       }
     });
 
-    // Theme Unlocks
+    // Themes
     themes.forEach(th => {
       if (!th.purchased) {
         const item = document.createElement('div');
-        item.className = 'shop-item';
+        item.className = 'shop-card';
         item.innerHTML = `
-          <span>🎨 ${th.name} ($${th.cost})</span>
-          <button class="buy-btn" ${cash < th.cost ? 'disabled' : ''} onclick="buyUpgrade('theme', '${th.className}')">Apply</button>
+          <div><b>🎨 ${th.name}</b><br><small>New cafe ambience</small></div>
+          <button class="shop-buy-btn" ${cash < th.cost ? 'disabled' : ''} onclick="buyShopItem('theme', '${th.classId}')">Buy ($${th.cost})</button>
         `;
-        list.appendChild(item);
+        box.appendChild(item);
       }
     });
 
-    if (list.children.length === 0) {
-      list.innerHTML = `<span style="font-size:11px; color:var(--accent-green);">🌟 Empire maximized! All items & tables active.</span>`;
+    if (box.children.length === 0) {
+      box.innerHTML = `<p style="color:#06d6a0; font-size:12px; margin:20px;">🎉 All items, tables, and themes are unlocked!</p>`;
     }
   }
 
-  // Auto-seating loops
-  setInterval(() => {
-    tables.forEach(t => {
-      if (t.unlocked && !t.customer) {
-        trySeatCustomer(t);
-      }
-    });
-  }, 3000);
-
-  // Initial Boot
+  // Initial draw
   updateHUD();
-  renderKitchen();
+  renderStations();
   renderTables();
-  renderShop();
-  trySeatCustomer(tables[0]);
 </script>
 
 </body>
