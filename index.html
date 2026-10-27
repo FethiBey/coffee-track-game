@@ -5,34 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Coffee Track Tycoon</title>
   <style>
-    :root {
-      --wood-dark: #3e2723;
-      --wood-med: #5d4037;
-      --wood-light: #8d6e63;
-      --counter-top: #d7ccc8;
-      --accent-gold: #ffb703;
-      --accent-red: #e76f51;
-      --accent-green: #2a9d8f;
-    }
-
-    body.neon-theme {
-      --wood-dark: #12002b;
-      --wood-med: #240046;
-      --wood-light: #3c096c;
-      --counter-top: #5a189a;
-      --accent-gold: #00f0ff;
-      --accent-green: #39ff14;
-    }
-
-    body.garden-theme {
-      --wood-dark: #1b4332;
-      --wood-med: #2d6a4f;
-      --wood-light: #52b788;
-      --counter-top: #d8f3dc;
-      --accent-gold: #ffe169;
-      --accent-green: #40916c;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -42,7 +14,7 @@
     }
 
     body {
-      background: #111;
+      background: #0f0c08;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -56,8 +28,8 @@
       height: 98vh;
       max-height: 840px;
       position: relative;
-      background: #2b170c;
-      border: 3px solid #1a0c06;
+      background: #4a2810;
+      border: 3px solid #2b170c;
       border-radius: 18px;
       overflow: hidden;
       display: flex;
@@ -65,161 +37,160 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.9);
     }
 
-    /* TOP STATUS BAR */
+    /* TOP STATUS HEADER */
     header {
-      background: rgba(15, 8, 5, 0.88);
-      backdrop-filter: blur(5px);
+      background: rgba(30, 15, 5, 0.9);
+      backdrop-filter: blur(4px);
       padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
       font-weight: bold;
-      z-index: 20;
-      border-bottom: 2px solid var(--wood-med);
+      z-index: 30;
+      border-bottom: 2px solid #8d5329;
     }
-    .badge-gold { color: var(--accent-gold); }
+    .badge-gold { color: #ffbe0b; }
     .hearts { font-size: 14px; letter-spacing: 2px; }
 
-    /* RESTAURANT 2D ENVIRONMENT (Scenery & Ambience) */
-    #cafe-scenery {
+    /* --- GÖRSELDEKİ RESTORAN ARKA PLANI (PANORAMIC WOODEN DINER) --- */
+    #restaurant-ambience {
       position: relative;
-      flex: 1.2;
+      flex: 1.25;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: linear-gradient(180deg, #4e342e 0%, #3e2723 60%, #271610 100%);
+      /* Dikey ahşap duvar dokusu */
+      background: repeating-linear-gradient(
+        90deg,
+        #b07240,
+        #b07240 38px,
+        #96582a 39px,
+        #c68752 40px
+      );
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.4);
     }
 
-    /* Windows & Outer Street View */
-    .scenery-wall {
+    /* Üst Ahşap Saçak / Kiriş */
+    .roof-beam {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 100px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 15px;
-      pointer-events: none;
+      height: 18px;
+      background: linear-gradient(180deg, #6c3b17 0%, #8f5326 100%);
+      border-bottom: 3px solid #4a2408;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.35);
+      z-index: 5;
     }
-    .cafe-window {
-      width: 75px;
-      height: 65px;
-      background: linear-gradient(180deg, #81d4fa 0%, #b3e5fc 100%);
-      border: 4px solid var(--wood-light);
-      border-radius: 8px;
-      position: relative;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.4);
-    }
-    .cafe-window::before {
-      content: '';
+
+    /* Panoramik Yatay Pencere & Dış Manzara */
+    .panoramic-window-frame {
       position: absolute;
-      top: 50%;
+      top: 25px;
+      left: 10px;
+      right: 10px;
+      height: 110px;
+      background: linear-gradient(180deg, #38b6ff 0%, #5ce1e6 55%, #ffeaa7 95%);
+      border: 8px solid #d48b4e;
+      border-radius: 8px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.25), 0 4px 8px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    /* Cam arkasındaki açık deniz / sahil silüeti */
+    .ocean-horizon {
+      position: absolute;
+      bottom: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: var(--wood-light);
+      height: 50px;
+      background: linear-gradient(180deg, #0096c7 0%, #0077b6 70%, #023e8a 100%);
     }
-    .cafe-window::after {
-      content: '';
+    .island-silhouette {
       position: absolute;
-      left: 50%;
+      bottom: 45px;
+      left: 20px;
+      width: 90px;
+      height: 22px;
+      background: #2a9d8f;
+      border-radius: 50% 50% 0 0;
+      opacity: 0.8;
+    }
+    .island-silhouette-2 {
+      position: absolute;
+      bottom: 44px;
+      right: 40px;
+      width: 140px;
+      height: 28px;
+      background: #264653;
+      border-radius: 50% 50% 0 0;
+      opacity: 0.7;
+    }
+
+    /* Yatay pencere bölme çıtaları */
+    .window-divider {
+      position: absolute;
       top: 0;
       bottom: 0;
-      width: 3px;
-      background: var(--wood-light);
-    }
-    .cafe-door {
-      width: 55px;
-      height: 85px;
-      background: #4a2810;
-      border: 3px solid #2b1406;
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-      position: relative;
-    }
-    .door-glass {
-      width: 70%;
-      height: 45%;
-      margin: 8px auto 0;
-      background: #81d4fa;
-      border: 2px solid #2b1406;
-      border-radius: 3px;
-    }
-    .door-knob {
+      left: 50%;
       width: 6px;
-      height: 6px;
-      background: #ffd166;
-      border-radius: 50%;
-      position: absolute;
-      right: 6px;
-      top: 55%;
+      background: #b07240;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
     }
 
-    /* Hanging Lamps & Board */
-    .hanging-lamps {
+    /* Ahşap Zemin / Güverte (Deck Flooring) */
+    .wooden-deck {
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       right: 0;
-      display: flex;
-      justify-content: space-evenly;
-      pointer-events: none;
-    }
-    .lamp {
-      width: 2px;
-      height: 25px;
-      background: #222;
-      position: relative;
-    }
-    .lamp-head {
-      position: absolute;
-      bottom: -10px;
-      left: -9px;
-      width: 20px;
-      height: 10px;
-      background: #d4a373;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 4px 12px #ffdd00;
+      height: 90px;
+      background: repeating-linear-gradient(
+        90deg,
+        #7f4f24,
+        #7f4f24 28px,
+        #58310c 30px
+      );
+      border-top: 5px solid #936639;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
     }
 
-    /* DINING TABLES IN SCENERY */
-    .tables-layer {
+    /* MASALAR & MÜŞTERİLER (Pencere ve Güverte Önünde) */
+    .customer-tables-layer {
       position: relative;
       z-index: 10;
-      margin-top: 75px;
+      margin-top: 60px;
       padding: 0 8px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
     .table-stand {
-      background: rgba(255,255,255,0.95);
+      background: rgba(255, 255, 255, 0.96);
       color: #222;
       border-radius: 12px;
-      border: 3px solid var(--wood-light);
-      min-height: 155px;
+      border: 3px solid #d48b4e;
+      min-height: 165px;
       padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.45);
     }
     .table-stand.locked {
-      background: rgba(45, 25, 15, 0.75);
-      border-style: dashed;
-      color: #bbb;
+      background: rgba(45, 25, 15, 0.85);
+      border: 2px dashed #936639;
+      color: #ddd;
       justify-content: center;
     }
     .table-label {
       font-size: 10px;
       font-weight: 800;
       text-transform: uppercase;
-      color: var(--wood-med);
+      color: #7f4f24;
     }
     .guest-avatar { font-size: 34px; line-height: 1; margin: 2px 0; }
     .guest-name { font-size: 11px; font-weight: bold; color: #222; }
@@ -244,11 +215,11 @@
     .patience-fill {
       height: 100%;
       width: 100%;
-      background: var(--accent-green);
+      background: #2a9d8f;
       transition: width 0.2s linear;
     }
     .serve-action-btn {
-      background: var(--accent-green);
+      background: #2a9d8f;
       color: #fff;
       border: none;
       width: 100%;
@@ -259,27 +230,27 @@
       cursor: pointer;
     }
 
-    /* 2D WOODEN COUNTER (Tezgah) */
+    /* TEZGAH (Restaurant Counter) */
     #counter-bar {
       position: relative;
-      z-index: 12;
-      background: var(--counter-top);
-      border-top: 6px solid var(--wood-med);
+      z-index: 15;
+      background: #e9ecef;
+      border-top: 6px solid #6c3b17;
       padding: 8px 10px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
     }
     .counter-wood-panel {
       font-size: 10px;
       font-weight: 800;
-      color: var(--wood-dark);
+      color: #4a2810;
       text-transform: uppercase;
       margin-bottom: 4px;
       display: flex;
       justify-content: space-between;
     }
     .tray-shelf {
-      background: rgba(0,0,0,0.18);
-      border: 1px dashed var(--wood-dark);
+      background: rgba(0,0,0,0.08);
+      border: 1px dashed #6c3b17;
       border-radius: 8px;
       padding: 6px;
       min-height: 42px;
@@ -298,20 +269,20 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     }
 
-    /* KITCHEN PREPARATION AREA */
+    /* KITCHEN PREPARATION */
     #kitchen-deck {
-      background: var(--wood-dark);
+      background: #2b170c;
       padding: 8px 10px 12px;
-      z-index: 12;
-      border-top: 3px solid rgba(0,0,0,0.3);
+      z-index: 15;
+      border-top: 3px solid #1a0c06;
     }
     .kitchen-title {
       font-size: 10px;
       font-weight: 800;
-      color: #ffd166;
+      color: #ffbe0b;
       text-transform: uppercase;
       margin-bottom: 6px;
     }
@@ -322,7 +293,7 @@
     }
     .recipe-btn {
       background: rgba(255,255,255,0.08);
-      border: 1px solid var(--wood-light);
+      border: 1px solid #7f4f24;
       color: #fff;
       border-radius: 8px;
       padding: 6px 3px;
@@ -345,26 +316,26 @@
       left: 0;
       height: 3px;
       width: 0%;
-      background: var(--accent-gold);
+      background: #ffbe0b;
     }
 
-    /* POPUP NOTIFICATIONS */
+    /* TOAST */
     #toast {
       position: absolute;
       top: 50px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0,0,0,0.85);
-      color: #ffd166;
+      color: #ffbe0b;
       font-size: 11px;
       font-weight: bold;
       padding: 5px 14px;
       border-radius: 15px;
-      z-index: 30;
+      z-index: 40;
       display: none;
     }
 
-    /* MENUS & OVERLAYS */
+    /* MODAL OVERLAYS */
     .overlay-window {
       position: absolute;
       top: 0;
@@ -381,7 +352,7 @@
       text-align: center;
     }
     .btn-action-primary {
-      background: var(--accent-gold);
+      background: #ffbe0b;
       color: #111;
       font-size: 16px;
       font-weight: 800;
@@ -390,10 +361,10 @@
       border: none;
       cursor: pointer;
       margin-top: 15px;
-      box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 190, 11, 0.4);
     }
     .btn-action-secondary {
-      background: var(--accent-green);
+      background: #2a9d8f;
       color: #fff;
       font-size: 14px;
       font-weight: 700;
@@ -414,7 +385,7 @@
     }
     .shop-row {
       background: rgba(255,255,255,0.07);
-      border: 1px solid var(--wood-light);
+      border: 1px solid #7f4f24;
       border-radius: 8px;
       padding: 10px;
       display: flex;
@@ -424,7 +395,7 @@
       text-align: left;
     }
     .shop-buy {
-      background: var(--accent-gold);
+      background: #ffbe0b;
       border: none;
       color: #111;
       font-weight: bold;
@@ -442,7 +413,7 @@
 <body>
 
 <div id="app">
-  <!-- TOP STATUS -->
+  <!-- STATUS HEADER -->
   <header>
     <div>Day: <span id="day-val" class="badge-gold">1</span></div>
     <div>Time: <span id="clock-val" class="badge-gold">30s</span></div>
@@ -452,41 +423,37 @@
 
   <div id="toast"></div>
 
-  <!-- RESTAURANT AMBIENCE & TABLES -->
-  <div id="cafe-scenery">
-    <!-- 2D Walls, Windows & Door -->
-    <div class="scenery-wall">
-      <div class="cafe-window"></div>
-      <div class="cafe-door">
-        <div class="door-glass"></div>
-        <div class="door-knob"></div>
-      </div>
-      <div class="cafe-window"></div>
+  <!-- RESTAURANT AMBIENCE (Panoramik Pencere, Ahşap Duvar, Güverte Zemin) -->
+  <div id="restaurant-ambience">
+    <div class="roof-beam"></div>
+
+    <!-- Dış Manzaralı Panoramik Cam -->
+    <div class="panoramic-window-frame">
+      <div class="island-silhouette"></div>
+      <div class="island-silhouette-2"></div>
+      <div class="ocean-horizon"></div>
+      <div class="window-divider"></div>
     </div>
 
-    <!-- Hanging Ceiling Lights -->
-    <div class="hanging-lamps">
-      <div class="lamp"><div class="lamp-head"></div></div>
-      <div class="lamp"><div class="lamp-head"></div></div>
-      <div class="lamp"><div class="lamp-head"></div></div>
-    </div>
+    <!-- Güverte / Ahşap Zemin -->
+    <div class="wooden-deck"></div>
 
-    <!-- Dining Tables Layer -->
-    <div class="tables-layer" id="tables-container"></div>
+    <!-- Masalar -->
+    <div class="customer-tables-layer" id="tables-container"></div>
   </div>
 
-  <!-- 2D WOODEN COUNTER (Tezgah) -->
+  <!-- RESTAURANT COUNTER (Tezgah) -->
   <div id="counter-bar">
     <div class="counter-wood-panel">
       <span>🍽️ Restaurant Counter</span>
       <span>Ready to Serve</span>
     </div>
     <div class="tray-shelf" id="tray-shelf">
-      <span style="font-size:10px; color:#5d4037;">No items on counter. Cook below!</span>
+      <span style="font-size:10px; color:#6c3b17;">No items on counter. Cook below!</span>
     </div>
   </div>
 
-  <!-- KITCHEN PREPARATION -->
+  <!-- KITCHEN STATIONS -->
   <div id="kitchen-deck">
     <div class="kitchen-title">👨‍🍳 Kitchen Stations</div>
     <div class="prep-grid" id="prep-grid"></div>
@@ -495,8 +462,8 @@
   <!-- 1. START SCREEN -->
   <div id="start-screen" class="overlay-window">
     <div style="font-size:55px; margin-bottom:8px;">☕🍩</div>
-    <h1 style="color:var(--accent-gold); font-size:24px;">COFFEE TRACK TYCOON</h1>
-    <p style="font-size:12px; color:#ddd; margin:6px 0 14px;">Cozy 2D Cafe Restaurant Management</p>
+    <h1 style="color:#ffbe0b; font-size:24px;">COFFEE TRACK TYCOON</h1>
+    <p style="font-size:12px; color:#ddd; margin:6px 0 14px;">Cozy Seaside Restaurant Simulator</p>
     <p style="font-size:11px; color:#bbb; max-width:280px; line-height:1.4;">
       Serve seated guests from the counter.<br>Survive the 30-second shift!<br>Keep all 3 hearts intact!
     </p>
@@ -505,12 +472,12 @@
 
   <!-- 2. SUMMARY SCREEN -->
   <div id="summary-screen" class="overlay-window" style="display:none;">
-    <h2 id="summary-title" style="color:var(--accent-gold); font-size:22px;">SHIFT COMPLETE!</h2>
+    <h2 id="summary-title" style="color:#ffbe0b; font-size:22px;">SHIFT COMPLETE!</h2>
     <p id="summary-desc" style="font-size:12px; color:#ddd; margin:8px 0 15px;">Today's restaurant performance:</p>
     
     <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:12px 20px; width:80%; margin-bottom:15px; font-size:13px; line-height:1.8;">
-      <div>Earned Cash: <b id="sum-earned" style="color:var(--accent-gold);">+$0</b></div>
-      <div>Total Cash: <b id="sum-total" style="color:var(--accent-gold);">$20</b></div>
+      <div>Earned Cash: <b id="sum-earned" style="color:#ffbe0b;">+$0</b></div>
+      <div>Total Cash: <b id="sum-total" style="color:#ffbe0b;">$20</b></div>
       <div>Guests Served: <b id="sum-customers" style="color:#2a9d8f;">0</b></div>
     </div>
 
@@ -522,17 +489,17 @@
 
   <!-- 3. SHOP MODAL -->
   <div id="shop-screen" class="overlay-window" style="display:none;">
-    <h2 style="color:var(--accent-gold); font-size:20px;">RESTAURANT UPGRADES</h2>
-    <p style="font-size:11px; color:#ddd;">Expand tables, recipes and cafe themes!</p>
+    <h2 style="color:#ffbe0b; font-size:20px;">RESTAURANT UPGRADES</h2>
+    <p style="font-size:11px; color:#ddd;">Expand tables and recipes to increase profit!</p>
     <div class="shop-scroll-area" id="shop-list"></div>
     <button class="btn-action-secondary" onclick="closeShop()">⬅ BACK TO MENU</button>
   </div>
 </div>
 
 <script>
-  /* --- Synthetic Audio Engine --- */
+  /* --- Synthetic Sound Effects --- */
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playBeep(freq, type, dur) {
+  function playTone(freq, type, dur) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     try {
       const osc = audioCtx.createOscillator();
@@ -548,11 +515,11 @@
     } catch(e){}
   }
   const sfx = {
-    click: () => playBeep(520, 'sine', 0.05),
-    cookDone: () => playBeep(680, 'triangle', 0.16),
-    coin: () => { playBeep(987, 'sine', 0.08); setTimeout(() => playBeep(1318, 'sine', 0.18), 70); },
-    hurt: () => playBeep(130, 'sawtooth', 0.28),
-    fanfare: () => { playBeep(523, 'sine', 0.1); setTimeout(() => playBeep(659, 'sine', 0.15), 120); }
+    click: () => playTone(520, 'sine', 0.05),
+    cookDone: () => playTone(680, 'triangle', 0.16),
+    coin: () => { playTone(987, 'sine', 0.08); setTimeout(() => playTone(1318, 'sine', 0.18), 70); },
+    hurt: () => playTone(130, 'sawtooth', 0.28),
+    fanfare: () => { playTone(523, 'sine', 0.1); setTimeout(() => playTone(659, 'sine', 0.15), 120); }
   };
 
   /* --- Game Data --- */
@@ -587,11 +554,6 @@
     { id: 1, unlocked: true, cost: 0, customer: null, timer: null, patience: 100 },
     { id: 2, unlocked: false, cost: 30, customer: null, timer: null, patience: 100 },
     { id: 3, unlocked: false, cost: 60, customer: null, timer: null, patience: 100 }
-  ];
-
-  const themes = [
-    { name: 'Neon Lounge', classId: 'neon-theme', cost: 50, purchased: false },
-    { name: 'Garden Terrace', classId: 'garden-theme', cost: 75, purchased: false }
   ];
 
   function toast(msg) {
@@ -669,8 +631,8 @@
     if (success) {
       sfx.fanfare();
       title.innerText = `DAY ${currentDay} COMPLETE!`;
-      title.style.color = 'var(--accent-gold)';
-      desc.innerText = "Shift closed successfully. Upgrade your cafe before next day!";
+      title.style.color = '#ffbe0b';
+      desc.innerText = "Shift closed successfully. Upgrade your restaurant before next day!";
       nxtBtn.innerText = `START DAY ${currentDay + 1} ❯`;
       nxtBtn.onclick = () => { currentDay++; startShift(); };
     } else {
@@ -706,7 +668,7 @@
       const bar = document.getElementById(`pbar-${table.id}`);
       if (bar) {
         bar.style.width = table.patience + '%';
-        if (table.patience < 40) bar.style.backgroundColor = 'var(--accent-gold)';
+        if (table.patience < 40) bar.style.backgroundColor = '#ffbe0b';
         if (table.patience < 20) bar.style.backgroundColor = '#e76f51';
       }
 
@@ -751,7 +713,7 @@
     });
   }
 
-  /* --- Cooking & Counter Shelf --- */
+  /* --- Cooking & Counter --- */
   let cooking = false;
   function cookItem(mealId) {
     if (!isShiftActive || cooking) return;
@@ -778,7 +740,7 @@
   function renderTray() {
     const shelf = document.getElementById('tray-shelf');
     if (readyTray.length === 0) {
-      shelf.innerHTML = `<span style="font-size:10px; color:#5d4037;">No items on counter. Cook below!</span>`;
+      shelf.innerHTML = `<span style="font-size:10px; color:#6c3b17;">No items on counter. Cook below!</span>`;
       return;
     }
     shelf.innerHTML = '';
@@ -830,7 +792,7 @@
       btn.innerHTML = `
         <span style="font-size:18px;">${m.icon}</span>
         <span>${m.name}</span>
-        <small style="color:var(--accent-gold);">${m.unlocked ? '+$' + m.earn : '🔒'}</small>
+        <small style="color:#ffbe0b;">${m.unlocked ? '+$' + m.earn : '🔒'}</small>
         <div id="cbar-${m.id}" class="cook-bar"></div>
       `;
       if (m.unlocked) btn.onclick = () => cookItem(m.id);
@@ -838,7 +800,7 @@
     });
   }
 
-  /* --- Upgrades & Store --- */
+  /* --- Shop Upgrades --- */
   function openShop() {
     sfx.click();
     document.getElementById('shop-screen').style.display = 'flex';
@@ -863,13 +825,6 @@
       if (cash >= m.cost) {
         cash -= m.cost;
         m.unlocked = true;
-      }
-    } else if (type === 'theme') {
-      const th = themes.find(tm => tm.classId === id);
-      if (cash >= th.cost && !th.purchased) {
-        cash -= th.cost;
-        th.purchased = true;
-        document.body.className = th.classId;
       }
     }
     updateHUD();
@@ -906,20 +861,8 @@
       }
     });
 
-    themes.forEach(th => {
-      if (!th.purchased) {
-        const item = document.createElement('div');
-        item.className = 'shop-row';
-        item.innerHTML = `
-          <div><b>🎨 ${th.name}</b><br><small>Change restaurant scenery</small></div>
-          <button class="shop-buy" ${cash < th.cost ? 'disabled' : ''} onclick="buyUpgrade('theme', '${th.classId}')">Buy ($${th.cost})</button>
-        `;
-        box.appendChild(item);
-      }
-    });
-
     if (box.children.length === 0) {
-      box.innerHTML = `<p style="color:#2a9d8f; font-size:12px; margin:20px;">🎉 All tables, recipes, and cafe themes unlocked!</p>`;
+      box.innerHTML = `<p style="color:#2a9d8f; font-size:12px; margin:20px;">🎉 All tables and recipes unlocked!</p>`;
     }
   }
 
