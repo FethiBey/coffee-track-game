@@ -6,31 +6,31 @@
   <title>Coffee Track Tycoon</title>
   <style>
     :root {
-      --counter-wood: #5e3023;
-      --counter-top: #895737;
-      --wall-bg: #d4a373;
+      --wood-dark: #3e2723;
+      --wood-med: #5d4037;
+      --wood-light: #8d6e63;
+      --counter-top: #d7ccc8;
       --accent-gold: #ffb703;
-      --accent-green: #2a9d8f;
       --accent-red: #e76f51;
-      --font-color: #2b2d42;
+      --accent-green: #2a9d8f;
     }
 
     body.neon-theme {
-      --counter-wood: #240046;
-      --counter-top: #3c096c;
-      --wall-bg: #10002b;
+      --wood-dark: #12002b;
+      --wood-med: #240046;
+      --wood-light: #3c096c;
+      --counter-top: #5a189a;
       --accent-gold: #00f0ff;
       --accent-green: #39ff14;
-      --font-color: #ffffff;
     }
 
     body.garden-theme {
-      --counter-wood: #283618;
-      --counter-top: #606c38;
-      --wall-bg: #ccd5ae;
-      --accent-gold: #dda15e;
-      --accent-green: #386641;
-      --font-color: #1b4332;
+      --wood-dark: #1b4332;
+      --wood-med: #2d6a4f;
+      --wood-light: #52b788;
+      --counter-top: #d8f3dc;
+      --accent-gold: #ffe169;
+      --accent-green: #40916c;
     }
 
     * {
@@ -38,7 +38,7 @@
       margin: 0;
       padding: 0;
       user-select: none;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
@@ -53,126 +53,202 @@
     #app {
       width: 100%;
       max-width: 440px;
-      height: 96vh;
-      max-height: 820px;
+      height: 98vh;
+      max-height: 840px;
       position: relative;
-      background: var(--wall-bg);
-      border: 3px solid #333;
+      background: #2b170c;
+      border: 3px solid #1a0c06;
       border-radius: 18px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      transition: background 0.4s ease;
-    }
-
-    /* RESTAURANT AMBIENCE GRAPHICS (Bricks, Windows, Blackboard) */
-    .cafe-wall-deco {
-      position: absolute;
-      top: 45px;
-      left: 0;
-      right: 0;
-      height: 90px;
-      pointer-events: none;
-      opacity: 0.35;
-      background-image: 
-        radial-gradient(#444 15%, transparent 16%),
-        radial-gradient(#444 15%, transparent 16%);
-      background-size: 20px 20px;
-      background-position: 0 0, 10px 10px;
-    }
-    .chalkboard {
-      width: 120px;
-      background: #1a1a1a;
-      border: 3px solid #8b5a2b;
-      border-radius: 6px;
-      text-align: center;
-      padding: 3px;
-      font-size: 9px;
-      color: #eee;
-      margin: 0 auto 4px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
     }
 
     /* TOP STATUS BAR */
     header {
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 8, 5, 0.88);
+      backdrop-filter: blur(5px);
       padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
       font-weight: bold;
-      z-index: 5;
+      z-index: 20;
+      border-bottom: 2px solid var(--wood-med);
     }
-    .badge-gold { color: #ffd166; }
+    .badge-gold { color: var(--accent-gold); }
     .hearts { font-size: 14px; letter-spacing: 2px; }
 
-    /* DINING AREA & TABLES */
-    #dining-section {
-      flex: 1.1;
-      padding: 8px;
+    /* RESTAURANT 2D ENVIRONMENT (Scenery & Ambience) */
+    #cafe-scenery {
       position: relative;
-      z-index: 2;
+      flex: 1.2;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #4e342e 0%, #3e2723 60%, #271610 100%);
     }
-    .tables-grid {
+
+    /* Windows & Outer Street View */
+    .scenery-wall {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 15px;
+      pointer-events: none;
+    }
+    .cafe-window {
+      width: 75px;
+      height: 65px;
+      background: linear-gradient(180deg, #81d4fa 0%, #b3e5fc 100%);
+      border: 4px solid var(--wood-light);
+      border-radius: 8px;
+      position: relative;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.4);
+    }
+    .cafe-window::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--wood-light);
+    }
+    .cafe-window::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--wood-light);
+    }
+    .cafe-door {
+      width: 55px;
+      height: 85px;
+      background: #4a2810;
+      border: 3px solid #2b1406;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+    }
+    .door-glass {
+      width: 70%;
+      height: 45%;
+      margin: 8px auto 0;
+      background: #81d4fa;
+      border: 2px solid #2b1406;
+      border-radius: 3px;
+    }
+    .door-knob {
+      width: 6px;
+      height: 6px;
+      background: #ffd166;
+      border-radius: 50%;
+      position: absolute;
+      right: 6px;
+      top: 55%;
+    }
+
+    /* Hanging Lamps & Board */
+    .hanging-lamps {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-evenly;
+      pointer-events: none;
+    }
+    .lamp {
+      width: 2px;
+      height: 25px;
+      background: #222;
+      position: relative;
+    }
+    .lamp-head {
+      position: absolute;
+      bottom: -10px;
+      left: -9px;
+      width: 20px;
+      height: 10px;
+      background: #d4a373;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 4px 12px #ffdd00;
+    }
+
+    /* DINING TABLES IN SCENERY */
+    .tables-layer {
+      position: relative;
+      z-index: 10;
+      margin-top: 75px;
+      padding: 0 8px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
-    .table-card {
-      background: rgba(255,255,255,0.92);
+    .table-stand {
+      background: rgba(255,255,255,0.95);
       color: #222;
       border-radius: 12px;
-      min-height: 145px;
-      padding: 6px;
+      border: 3px solid var(--wood-light);
+      min-height: 155px;
+      padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      border: 2px solid rgba(0,0,0,0.15);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
     }
-    .table-card.locked {
-      background: rgba(0,0,0,0.4);
-      color: #ddd;
-      border: 2px dashed #666;
+    .table-stand.locked {
+      background: rgba(45, 25, 15, 0.75);
+      border-style: dashed;
+      color: #bbb;
       justify-content: center;
     }
-    .table-title { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #777; }
-    .customer-avatar { font-size: 32px; line-height: 1.1; }
-    .customer-name { font-size: 11px; font-weight: bold; color: #333; }
-    .order-bubble {
-      background: #ffe3a8;
-      color: #4a2c1a;
-      border: 1px solid #d4a373;
-      padding: 3px 6px;
-      border-radius: 10px;
+    .table-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--wood-med);
+    }
+    .guest-avatar { font-size: 34px; line-height: 1; margin: 2px 0; }
+    .guest-name { font-size: 11px; font-weight: bold; color: #222; }
+    .order-ticket {
+      background: #fff3b0;
+      border: 1px solid #e09f3e;
+      padding: 3px 5px;
+      border-radius: 8px;
       font-size: 10px;
       font-weight: bold;
       width: 100%;
       text-align: center;
     }
-    .patience-track {
+    .patience-frame {
       width: 100%;
-      height: 5px;
-      background: #ddd;
+      height: 6px;
+      background: #ccc;
       border-radius: 3px;
       overflow: hidden;
-      margin-top: 3px;
+      margin-top: 2px;
     }
-    .patience-bar {
+    .patience-fill {
       height: 100%;
       width: 100%;
-      background: #06d6a0;
+      background: var(--accent-green);
       transition: width 0.2s linear;
     }
-    .serve-btn {
-      background: #2a9d8f;
+    .serve-action-btn {
+      background: var(--accent-green);
       color: #fff;
       border: none;
       width: 100%;
@@ -183,60 +259,73 @@
       cursor: pointer;
     }
 
-    /* WOODEN COUNTER & TRAY */
-    #counter-section {
+    /* 2D WOODEN COUNTER (Tezgah) */
+    #counter-bar {
+      position: relative;
+      z-index: 12;
       background: var(--counter-top);
-      border-top: 4px solid var(--counter-wood);
+      border-top: 6px solid var(--wood-med);
       padding: 8px 10px;
-      z-index: 3;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
     }
-    .counter-label {
+    .counter-wood-panel {
       font-size: 10px;
+      font-weight: 800;
+      color: var(--wood-dark);
       text-transform: uppercase;
-      font-weight: bold;
-      color: #ffe8d6;
       margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
     }
-    .ready-tray {
-      background: rgba(0,0,0,0.3);
+    .tray-shelf {
+      background: rgba(0,0,0,0.18);
+      border: 1px dashed var(--wood-dark);
       border-radius: 8px;
       padding: 6px;
-      min-height: 40px;
+      min-height: 42px;
       display: flex;
       gap: 6px;
       overflow-x: auto;
       align-items: center;
     }
-    .tray-item {
+    .tray-food {
       background: #fff;
-      color: #222;
+      color: #111;
       border-radius: 6px;
       padding: 3px 8px;
       font-size: 11px;
       font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 4px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    /* KITCHEN STATIONS */
-    #kitchen-section {
-      background: var(--counter-wood);
+    /* KITCHEN PREPARATION AREA */
+    #kitchen-deck {
+      background: var(--wood-dark);
       padding: 8px 10px 12px;
-      z-index: 3;
+      z-index: 12;
+      border-top: 3px solid rgba(0,0,0,0.3);
     }
-    .stations-grid {
+    .kitchen-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: #ffd166;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .prep-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
-    .cook-card {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
+    .recipe-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--wood-light);
       color: #fff;
       border-radius: 8px;
-      padding: 6px 4px;
+      padding: 6px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -246,43 +335,43 @@
       font-size: 10px;
       font-weight: bold;
     }
-    .cook-card.locked {
+    .recipe-btn.locked {
       opacity: 0.35;
       cursor: not-allowed;
     }
-    .cook-progress {
+    .cook-bar {
       position: absolute;
       bottom: 0;
       left: 0;
       height: 3px;
       width: 0%;
-      background: #ffd166;
+      background: var(--accent-gold);
     }
 
-    /* NOTIFICATION TOAST */
-    #toast-msg {
+    /* POPUP NOTIFICATIONS */
+    #toast {
       position: absolute;
-      top: 48px;
+      top: 50px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0,0,0,0.85);
       color: #ffd166;
       font-size: 11px;
       font-weight: bold;
-      padding: 4px 12px;
-      border-radius: 12px;
-      z-index: 10;
+      padding: 5px 14px;
+      border-radius: 15px;
+      z-index: 30;
       display: none;
     }
 
-    /* MODAL OVERLAYS (Title, Score, Shop) */
-    .screen-overlay {
+    /* MENUS & OVERLAYS */
+    .overlay-window {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(18, 12, 9, 0.94);
+      background: rgba(20, 10, 6, 0.95);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -291,18 +380,9 @@
       z-index: 100;
       text-align: center;
     }
-    .game-logo {
-      font-size: 50px;
-      margin-bottom: 8px;
-      animation: bounce 1.5s infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    .btn-main {
-      background: #ffd166;
-      color: #2b1d16;
+    .btn-action-primary {
+      background: var(--accent-gold);
+      color: #111;
       font-size: 16px;
       font-weight: 800;
       padding: 12px 28px;
@@ -310,10 +390,10 @@
       border: none;
       cursor: pointer;
       margin-top: 15px;
-      box-shadow: 0 4px 15px rgba(255, 209, 102, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
     }
-    .btn-secondary {
-      background: #2a9d8f;
+    .btn-action-secondary {
+      background: var(--accent-green);
       color: #fff;
       font-size: 14px;
       font-weight: 700;
@@ -323,7 +403,7 @@
       cursor: pointer;
       margin: 6px;
     }
-    .shop-scroll {
+    .shop-scroll-area {
       width: 100%;
       max-height: 320px;
       overflow-y: auto;
@@ -332,9 +412,9 @@
       flex-direction: column;
       gap: 8px;
     }
-    .shop-card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
+    .shop-row {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--wood-light);
       border-radius: 8px;
       padding: 10px;
       display: flex;
@@ -343,16 +423,16 @@
       font-size: 12px;
       text-align: left;
     }
-    .shop-buy-btn {
-      background: #ffd166;
+    .shop-buy {
+      background: var(--accent-gold);
       border: none;
-      color: #222;
+      color: #111;
       font-weight: bold;
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
     }
-    .shop-buy-btn:disabled {
+    .shop-buy:disabled {
       background: #555;
       color: #888;
       cursor: not-allowed;
@@ -362,9 +442,7 @@
 <body>
 
 <div id="app">
-  <div class="cafe-wall-deco"></div>
-
-  <!-- STATUS HEADER -->
+  <!-- TOP STATUS -->
   <header>
     <div>Day: <span id="day-val" class="badge-gold">1</span></div>
     <div>Time: <span id="clock-val" class="badge-gold">30s</span></div>
@@ -372,69 +450,89 @@
     <div id="lives-val" class="hearts">❤️❤️❤️</div>
   </header>
 
-  <div id="toast-msg"></div>
+  <div id="toast"></div>
 
-  <!-- DINING AREA -->
-  <section id="dining-section">
-    <div class="chalkboard">☕ Freshly Brewed Coffee & Pastries</div>
-    <div class="tables-grid" id="tables-container"></div>
-  </section>
-
-  <!-- WOOD COUNTER / TRAY -->
-  <section id="counter-section">
-    <div class="counter-label">🍽️ Counter Tray (Tap Serve):</div>
-    <div class="ready-tray" id="ready-tray">
-      <span style="font-size:10px; color:#ddd;">No meals ready. Tap below to cook!</span>
+  <!-- RESTAURANT AMBIENCE & TABLES -->
+  <div id="cafe-scenery">
+    <!-- 2D Walls, Windows & Door -->
+    <div class="scenery-wall">
+      <div class="cafe-window"></div>
+      <div class="cafe-door">
+        <div class="door-glass"></div>
+        <div class="door-knob"></div>
+      </div>
+      <div class="cafe-window"></div>
     </div>
-  </section>
 
-  <!-- KITCHEN STATIONS -->
-  <section id="kitchen-section">
-    <div class="counter-label" style="margin-bottom:6px;">👨‍🍳 Kitchen Stations:</div>
-    <div class="stations-grid" id="stations-container"></div>
-  </section>
+    <!-- Hanging Ceiling Lights -->
+    <div class="hanging-lamps">
+      <div class="lamp"><div class="lamp-head"></div></div>
+      <div class="lamp"><div class="lamp-head"></div></div>
+      <div class="lamp"><div class="lamp-head"></div></div>
+    </div>
 
-  <!-- 1. START / TITLE SCREEN -->
-  <div id="start-screen" class="screen-overlay">
-    <div class="game-logo">☕🥐</div>
-    <h1 style="color:#ffd166; font-size:24px;">COFFEE TRACK</h1>
-    <p style="font-size:12px; color:#ddd; margin:6px 0 14px;">Restaurant Tycoon Simulator</p>
-    <p style="font-size:11px; color:#bbb; max-width:280px; line-height:1.4;">
-      Serve customers before patience runs out.<br>Survive the 30-second shift!<br>Don't lose your 3 hearts!
-    </p>
-    <button class="btn-main" onclick="startShift()">▶ PLAY SHIFT 1</button>
+    <!-- Dining Tables Layer -->
+    <div class="tables-layer" id="tables-container"></div>
   </div>
 
-  <!-- 2. SHIFT SUMMARY / SCORE SCREEN -->
-  <div id="summary-screen" class="screen-overlay" style="display:none;">
-    <h2 id="summary-title" style="color:#ffd166; font-size:22px;">SHIFT FINISHED!</h2>
-    <p id="summary-desc" style="font-size:12px; color:#ddd; margin:8px 0 15px;">Great job serving today's guests.</p>
+  <!-- 2D WOODEN COUNTER (Tezgah) -->
+  <div id="counter-bar">
+    <div class="counter-wood-panel">
+      <span>🍽️ Restaurant Counter</span>
+      <span>Ready to Serve</span>
+    </div>
+    <div class="tray-shelf" id="tray-shelf">
+      <span style="font-size:10px; color:#5d4037;">No items on counter. Cook below!</span>
+    </div>
+  </div>
+
+  <!-- KITCHEN PREPARATION -->
+  <div id="kitchen-deck">
+    <div class="kitchen-title">👨‍🍳 Kitchen Stations</div>
+    <div class="prep-grid" id="prep-grid"></div>
+  </div>
+
+  <!-- 1. START SCREEN -->
+  <div id="start-screen" class="overlay-window">
+    <div style="font-size:55px; margin-bottom:8px;">☕🍩</div>
+    <h1 style="color:var(--accent-gold); font-size:24px;">COFFEE TRACK TYCOON</h1>
+    <p style="font-size:12px; color:#ddd; margin:6px 0 14px;">Cozy 2D Cafe Restaurant Management</p>
+    <p style="font-size:11px; color:#bbb; max-width:280px; line-height:1.4;">
+      Serve seated guests from the counter.<br>Survive the 30-second shift!<br>Keep all 3 hearts intact!
+    </p>
+    <button class="btn-action-primary" onclick="startShift()">▶ PLAY SHIFT 1</button>
+  </div>
+
+  <!-- 2. SUMMARY SCREEN -->
+  <div id="summary-screen" class="overlay-window" style="display:none;">
+    <h2 id="summary-title" style="color:var(--accent-gold); font-size:22px;">SHIFT COMPLETE!</h2>
+    <p id="summary-desc" style="font-size:12px; color:#ddd; margin:8px 0 15px;">Today's restaurant performance:</p>
     
     <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:12px 20px; width:80%; margin-bottom:15px; font-size:13px; line-height:1.8;">
-      <div>Earned Cash: <b id="sum-earned" style="color:#ffd166;">+$0</b></div>
-      <div>Total Bank: <b id="sum-total" style="color:#ffd166;">$20</b></div>
-      <div>Customers Served: <b id="sum-customers" style="color:#06d6a0;">0</b></div>
+      <div>Earned Cash: <b id="sum-earned" style="color:var(--accent-gold);">+$0</b></div>
+      <div>Total Cash: <b id="sum-total" style="color:var(--accent-gold);">$20</b></div>
+      <div>Guests Served: <b id="sum-customers" style="color:#2a9d8f;">0</b></div>
     </div>
 
     <div>
-      <button class="btn-secondary" onclick="openShop()">🏪 SHOP</button>
-      <button class="btn-main" style="margin-top:0;" id="next-shift-btn" onclick="nextShift()">NEXT SHIFT ❯</button>
+      <button class="btn-action-secondary" onclick="openShop()">🏪 SHOP</button>
+      <button class="btn-action-primary" style="margin-top:0;" id="next-shift-btn" onclick="nextShift()">NEXT SHIFT ❯</button>
     </div>
   </div>
 
   <!-- 3. SHOP MODAL -->
-  <div id="shop-screen" class="screen-overlay" style="display:none;">
-    <h2 style="color:#ffd166; font-size:20px;">CAFE UPGRADES</h2>
-    <p style="font-size:11px; color:#ddd;">Unlock items, tables & themes to earn more!</p>
-    <div class="shop-scroll" id="shop-items-box"></div>
-    <button class="btn-secondary" onclick="closeShop()">⬅ BACK TO MENU</button>
+  <div id="shop-screen" class="overlay-window" style="display:none;">
+    <h2 style="color:var(--accent-gold); font-size:20px;">RESTAURANT UPGRADES</h2>
+    <p style="font-size:11px; color:#ddd;">Expand tables, recipes and cafe themes!</p>
+    <div class="shop-scroll-area" id="shop-list"></div>
+    <button class="btn-action-secondary" onclick="closeShop()">⬅ BACK TO MENU</button>
   </div>
 </div>
 
 <script>
-  /* --- Synthetic SFX --- */
+  /* --- Synthetic Audio Engine --- */
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playTone(freq, type, dur) {
+  function playBeep(freq, type, dur) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     try {
       const osc = audioCtx.createOscillator();
@@ -450,14 +548,14 @@
     } catch(e){}
   }
   const sfx = {
-    click: () => playTone(500, 'sine', 0.05),
-    cookDone: () => playTone(650, 'triangle', 0.15),
-    coin: () => { playTone(987, 'sine', 0.08); setTimeout(() => playTone(1318, 'sine', 0.18), 70); },
-    hurt: () => playTone(140, 'sawtooth', 0.25),
-    fanfare: () => { playTone(523, 'sine', 0.1); setTimeout(() => playTone(659, 'sine', 0.15), 120); }
+    click: () => playBeep(520, 'sine', 0.05),
+    cookDone: () => playBeep(680, 'triangle', 0.16),
+    coin: () => { playBeep(987, 'sine', 0.08); setTimeout(() => playBeep(1318, 'sine', 0.18), 70); },
+    hurt: () => playBeep(130, 'sawtooth', 0.28),
+    fanfare: () => { playBeep(523, 'sine', 0.1); setTimeout(() => playBeep(659, 'sine', 0.15), 120); }
   };
 
-  /* --- Game State --- */
+  /* --- Game Data --- */
   let currentDay = 1;
   let cash = 20;
   let shiftEarned = 0;
@@ -467,17 +565,15 @@
   let isShiftActive = false;
   let readyTray = [];
 
-  // 6 Meals (Beverages + Bakery)
   const menu = [
     { id: 'tea', name: 'Black Tea', icon: '🍵', time: 1000, earn: 6, cost: 0, unlocked: true },
     { id: 'coffee', name: 'Filter Coffee', icon: '☕', time: 1500, earn: 10, cost: 0, unlocked: true },
-    { id: 'latte', name: 'Latte', icon: '🥛', time: 2200, earn: 18, cost: 35, unlocked: false },
+    { id: 'latte', name: 'Macchiato', icon: '🥛', time: 2200, earn: 18, cost: 35, unlocked: false },
     { id: 'croissant', name: 'Croissant', icon: '🥐', time: 1800, earn: 16, cost: 45, unlocked: false },
     { id: 'donut', name: 'Donut', icon: '🍩', time: 2000, earn: 22, cost: 65, unlocked: false },
     { id: 'cheesecake', name: 'Cheesecake', icon: '🍰', time: 2600, earn: 35, cost: 95, unlocked: false }
   ];
 
-  // Avatars
   const avatars = [
     { name: 'Alex', icon: '🧑‍🎓' },
     { name: 'Sarah', icon: '👩‍💼' },
@@ -487,21 +583,19 @@
     { name: 'Mike', icon: '🏃' }
   ];
 
-  // Tables
   const tables = [
     { id: 1, unlocked: true, cost: 0, customer: null, timer: null, patience: 100 },
     { id: 2, unlocked: false, cost: 30, customer: null, timer: null, patience: 100 },
     { id: 3, unlocked: false, cost: 60, customer: null, timer: null, patience: 100 }
   ];
 
-  // Themes
   const themes = [
     { name: 'Neon Lounge', classId: 'neon-theme', cost: 50, purchased: false },
     { name: 'Garden Terrace', classId: 'garden-theme', cost: 75, purchased: false }
   ];
 
-  function showToast(msg) {
-    const el = document.getElementById('toast-msg');
+  function toast(msg) {
+    const el = document.getElementById('toast');
     el.innerText = msg;
     el.style.display = 'block';
     setTimeout(() => el.style.display = 'none', 1800);
@@ -511,13 +605,13 @@
     document.getElementById('day-val').innerText = currentDay;
     document.getElementById('clock-val').innerText = shiftTimer + 's';
     document.getElementById('cash-val').innerText = '$' + cash;
-    let heartsStr = '';
-    for (let i = 0; i < lives; i++) heartsStr += '❤️';
-    for (let i = lives; i < 3; i++) heartsStr += '🖤';
-    document.getElementById('lives-val').innerText = heartsStr;
+    let hearts = '';
+    for (let i = 0; i < lives; i++) hearts += '❤️';
+    for (let i = lives; i < 3; i++) hearts += '🖤';
+    document.getElementById('lives-val').innerText = hearts;
   }
 
-  /* --- Game Loop & Shifts --- */
+  /* --- Game Shifts --- */
   let gameInterval = null;
 
   function startShift() {
@@ -533,7 +627,7 @@
     readyTray = [];
 
     renderTray();
-    renderStations();
+    renderKitchen();
     renderTables();
     updateHUD();
 
@@ -543,9 +637,8 @@
       shiftTimer--;
       updateHUD();
 
-      // Check empty tables to seat guests
       tables.forEach(t => {
-        if (t.unlocked && !t.customer && Math.random() < 0.4) {
+        if (t.unlocked && !t.customer && Math.random() < 0.45) {
           seatCustomer(t);
         }
       });
@@ -555,7 +648,6 @@
       }
     }, 1000);
 
-    // Initial seat
     tables.forEach(t => { if(t.unlocked) seatCustomer(t); });
   }
 
@@ -576,14 +668,14 @@
 
     if (success) {
       sfx.fanfare();
-      title.innerText = `DAY ${currentDay} COMPLETED!`;
-      title.style.color = '#ffd166';
-      desc.innerText = "Shift closed successfully. Upgrade cafe before next day!";
+      title.innerText = `DAY ${currentDay} COMPLETE!`;
+      title.style.color = 'var(--accent-gold)';
+      desc.innerText = "Shift closed successfully. Upgrade your cafe before next day!";
       nxtBtn.innerText = `START DAY ${currentDay + 1} ❯`;
       nxtBtn.onclick = () => { currentDay++; startShift(); };
     } else {
       sfx.hurt();
-      title.innerText = `SHIFT FAILED!`;
+      title.innerText = `RESTAURANT CLOSED!`;
       title.style.color = '#e76f51';
       desc.innerText = "You lost all 3 hearts! Try this shift again or buy upgrades.";
       nxtBtn.innerText = "RETRY SHIFT ↺";
@@ -592,7 +684,7 @@
     summary.style.display = 'flex';
   }
 
-  /* --- Customer Management --- */
+  /* --- Seating Guests --- */
   function seatCustomer(table) {
     if (table.customer || !isShiftActive) return;
 
@@ -614,7 +706,7 @@
       const bar = document.getElementById(`pbar-${table.id}`);
       if (bar) {
         bar.style.width = table.patience + '%';
-        if (table.patience < 40) bar.style.backgroundColor = '#ffd166';
+        if (table.patience < 40) bar.style.backgroundColor = 'var(--accent-gold)';
         if (table.patience < 20) bar.style.backgroundColor = '#e76f51';
       }
 
@@ -623,12 +715,12 @@
         table.customer = null;
         sfx.hurt();
         lives--;
-        showToast("💔 Customer left! -1 Life");
+        toast("💔 Guest left angry! -1 Life");
         updateHUD();
         renderTables();
         if (lives <= 0) endShift(false);
       }
-    }, 400);
+    }, 380);
 
     renderTables();
   }
@@ -637,39 +729,39 @@
     const cont = document.getElementById('tables-container');
     cont.innerHTML = '';
     tables.forEach(t => {
-      const card = document.createElement('div');
+      const stand = document.createElement('div');
       if (!t.unlocked) {
-        card.className = 'table-card locked';
-        card.innerHTML = `<span style="font-size:22px;">🔒</span><small style="margin-top:4px;">Table ${t.id}<br>(Shop)</small>`;
+        stand.className = 'table-stand locked';
+        stand.innerHTML = `<span style="font-size:24px;">🔒</span><small style="margin-top:4px;">Table ${t.id}<br>(Locked)</small>`;
       } else if (!t.customer) {
-        card.className = 'table-card';
-        card.innerHTML = `<span class="table-title">Table ${t.id}</span><span style="font-size:24px; color:#aaa; margin:14px 0;">🪑</span><small style="color:#888;">Empty</small>`;
+        stand.className = 'table-stand';
+        stand.innerHTML = `<span class="table-label">Table ${t.id}</span><span style="font-size:26px; color:#888; margin:14px 0;">🪑</span><small style="color:#666;">Ready</small>`;
       } else {
-        card.className = 'table-card';
-        card.innerHTML = `
-          <span class="table-title">Table ${t.id}</span>
-          <div class="customer-avatar">${t.customer.icon}</div>
-          <div class="customer-name">${t.customer.name}</div>
-          <div class="order-bubble">${t.customer.order.icon} ${t.customer.order.name}</div>
-          <div class="patience-track"><div id="pbar-${t.id}" class="patience-bar" style="width:${t.patience}%"></div></div>
-          <button class="serve-btn" onclick="serveOrder(${t.id})">Serve</button>
+        stand.className = 'table-stand';
+        stand.innerHTML = `
+          <span class="table-label">Table ${t.id}</span>
+          <div class="guest-avatar">${t.customer.icon}</div>
+          <div class="guest-name">${t.customer.name}</div>
+          <div class="order-ticket">${t.customer.order.icon} ${t.customer.order.name}</div>
+          <div class="patience-frame"><div id="pbar-${t.id}" class="patience-fill" style="width:${t.patience}%"></div></div>
+          <button class="serve-action-btn" onclick="serveGuest(${t.id})">Serve</button>
         `;
       }
-      cont.appendChild(card);
+      cont.appendChild(stand);
     });
   }
 
-  /* --- Cooking & Serving --- */
+  /* --- Cooking & Counter Shelf --- */
   let cooking = false;
-  function cook(mealId) {
+  function cookItem(mealId) {
     if (!isShiftActive || cooking) return;
     const meal = menu.find(m => m.id === mealId);
     if (!meal || !meal.unlocked) return;
 
     cooking = true;
     sfx.click();
-    showToast(`Brewing ${meal.name}...`);
-    const p = document.getElementById(`prog-${meal.id}`);
+    toast(`Preparing ${meal.name}...`);
+    const p = document.getElementById(`cbar-${meal.id}`);
     p.style.transition = `width ${meal.time}ms linear`;
     p.style.width = '100%';
 
@@ -684,26 +776,26 @@
   }
 
   function renderTray() {
-    const tray = document.getElementById('ready-tray');
+    const shelf = document.getElementById('tray-shelf');
     if (readyTray.length === 0) {
-      tray.innerHTML = `<span style="font-size:10px; color:#ddd;">No meals ready. Tap below to cook!</span>`;
+      shelf.innerHTML = `<span style="font-size:10px; color:#5d4037;">No items on counter. Cook below!</span>`;
       return;
     }
-    tray.innerHTML = '';
+    shelf.innerHTML = '';
     readyTray.forEach((m, idx) => {
       const d = document.createElement('div');
-      d.className = 'tray-item';
-      d.innerHTML = `<span>${m.icon} ${m.name}</span> <span style="cursor:pointer; color:#d90429;" onclick="discardTray(${idx})">✖</span>`;
-      tray.appendChild(d);
+      d.className = 'tray-food';
+      d.innerHTML = `<span>${m.icon} ${m.name}</span> <span style="cursor:pointer; color:#d90429;" onclick="discardFood(${idx})">✖</span>`;
+      shelf.appendChild(d);
     });
   }
 
-  function discardTray(idx) {
+  function discardFood(idx) {
     readyTray.splice(idx, 1);
     renderTray();
   }
 
-  function serveOrder(tableId) {
+  function serveGuest(tableId) {
     const table = tables.find(t => t.id === tableId);
     if (!table || !table.customer) return;
 
@@ -718,35 +810,35 @@
       cash += earn;
       shiftEarned += earn;
       shiftServed++;
-      showToast(`+ $${earn} Earned!`);
+      toast(`+ $${earn} Earned!`);
       table.customer = null;
       updateHUD();
       renderTray();
       renderTables();
     } else {
       sfx.hurt();
-      showToast(`⚠️ You don't have ${table.customer.order.name}!`);
+      toast(`⚠️ Prepare ${table.customer.order.name} first!`);
     }
   }
 
-  function renderStations() {
-    const box = document.getElementById('stations-container');
+  function renderKitchen() {
+    const box = document.getElementById('prep-grid');
     box.innerHTML = '';
     menu.forEach(m => {
-      const card = document.createElement('div');
-      card.className = `cook-card ${m.unlocked ? '' : 'locked'}`;
-      card.innerHTML = `
+      const btn = document.createElement('div');
+      btn.className = `recipe-btn ${m.unlocked ? '' : 'locked'}`;
+      btn.innerHTML = `
         <span style="font-size:18px;">${m.icon}</span>
         <span>${m.name}</span>
-        <small style="color:#ffd166;">${m.unlocked ? '+$' + m.earn : '🔒 Locked'}</small>
-        <div id="prog-${m.id}" class="cook-progress"></div>
+        <small style="color:var(--accent-gold);">${m.unlocked ? '+$' + m.earn : '🔒'}</small>
+        <div id="cbar-${m.id}" class="cook-bar"></div>
       `;
-      if (m.unlocked) card.onclick = () => cook(m.id);
-      box.appendChild(card);
+      if (m.unlocked) btn.onclick = () => cookItem(m.id);
+      box.appendChild(btn);
     });
   }
 
-  /* --- Shop System --- */
+  /* --- Upgrades & Store --- */
   function openShop() {
     sfx.click();
     document.getElementById('shop-screen').style.display = 'flex';
@@ -758,7 +850,7 @@
     document.getElementById('shop-screen').style.display = 'none';
   }
 
-  function buyShopItem(type, id) {
+  function buyUpgrade(type, id) {
     sfx.coin();
     if (type === 'table') {
       const t = tables.find(tbl => tbl.id === id);
@@ -781,62 +873,59 @@
       }
     }
     updateHUD();
-    renderStations();
+    renderKitchen();
     renderTables();
     renderShopItems();
   }
 
   function renderShopItems() {
-    const box = document.getElementById('shop-items-box');
+    const box = document.getElementById('shop-list');
     box.innerHTML = '';
 
-    // Tables
     tables.forEach(t => {
       if (!t.unlocked) {
         const item = document.createElement('div');
-        item.className = 'shop-card';
+        item.className = 'shop-row';
         item.innerHTML = `
-          <div><b>🪑 Table ${t.id}</b><br><small>Seat more customers</small></div>
-          <button class="shop-buy-btn" ${cash < t.cost ? 'disabled' : ''} onclick="buyShopItem('table', ${t.id})">Unlock ($${t.cost})</button>
+          <div><b>🪑 Table ${t.id}</b><br><small>Seat more guests</small></div>
+          <button class="shop-buy" ${cash < t.cost ? 'disabled' : ''} onclick="buyUpgrade('table', ${t.id})">Unlock ($${t.cost})</button>
         `;
         box.appendChild(item);
       }
     });
 
-    // Recipes
     menu.forEach(m => {
       if (!m.unlocked) {
         const item = document.createElement('div');
-        item.className = 'shop-card';
+        item.className = 'shop-row';
         item.innerHTML = `
           <div><b>${m.icon} ${m.name}</b><br><small>Earn +$${m.earn} per order</small></div>
-          <button class="shop-buy-btn" ${cash < m.cost ? 'disabled' : ''} onclick="buyShopItem('meal', '${m.id}')">Unlock ($${m.cost})</button>
+          <button class="shop-buy" ${cash < m.cost ? 'disabled' : ''} onclick="buyUpgrade('meal', '${m.id}')">Unlock ($${m.cost})</button>
         `;
         box.appendChild(item);
       }
     });
 
-    // Themes
     themes.forEach(th => {
       if (!th.purchased) {
         const item = document.createElement('div');
-        item.className = 'shop-card';
+        item.className = 'shop-row';
         item.innerHTML = `
-          <div><b>🎨 ${th.name}</b><br><small>New cafe ambience</small></div>
-          <button class="shop-buy-btn" ${cash < th.cost ? 'disabled' : ''} onclick="buyShopItem('theme', '${th.classId}')">Buy ($${th.cost})</button>
+          <div><b>🎨 ${th.name}</b><br><small>Change restaurant scenery</small></div>
+          <button class="shop-buy" ${cash < th.cost ? 'disabled' : ''} onclick="buyUpgrade('theme', '${th.classId}')">Buy ($${th.cost})</button>
         `;
         box.appendChild(item);
       }
     });
 
     if (box.children.length === 0) {
-      box.innerHTML = `<p style="color:#06d6a0; font-size:12px; margin:20px;">🎉 All items, tables, and themes are unlocked!</p>`;
+      box.innerHTML = `<p style="color:#2a9d8f; font-size:12px; margin:20px;">🎉 All tables, recipes, and cafe themes unlocked!</p>`;
     }
   }
 
-  // Initial draw
+  // Boot
   updateHUD();
-  renderStations();
+  renderKitchen();
   renderTables();
 </script>
 
